@@ -93,7 +93,8 @@ public class CloneController : MonoBehaviour
         JumpAndGravity(action);
 
         // --- Soft position correction to reduce drift/offset ---
-        if (_currentActionIndex % correctionInterval == 0 && _currentActionIndex < actions.Count)
+        if (_currentActionIndex % correctionInterval == 0 && _currentActionIndex < actions.Count &&
+    _animIDJump == 0)
         {
             Vector3 recordedPos = actions[_currentActionIndex].position;
             Vector3 delta = recordedPos - transform.position;
