@@ -1454,6 +1454,9 @@ MonoBehaviour:
   globalVolume: {fileID: 500256564}
   activationKey: 112
   effectDuration: 2
+  chromaticAberrationMax: 1
+  lensDistortionMax: -0.75
+  vignetteMax: 0.5
 --- !u!4 &1972505625
 Transform:
   m_ObjectHideFlags: 0
