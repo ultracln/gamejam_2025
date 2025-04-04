@@ -44,6 +44,9 @@ public class CloneController : MonoBehaviour
     private List<ActionRecorder.PlayerAction> actions;
     private int _currentActionIndex = 0;
     private bool isInitialized = false;
+    private float correctionThreshold = 0.1f;
+    private int correctionInterval = 10;
+
 
     public void Init(ActionRecorder recorder, List<ActionRecorder.PlayerAction> recordedActions)
     {
@@ -88,6 +91,21 @@ public class CloneController : MonoBehaviour
 
         Move(action);
         JumpAndGravity(action);
+
+        // --- Soft position correction to reduce drift/offset ---
+        if (_currentActionIndex % correctionInterval == 0 && _currentActionIndex < actions.Count)
+        {
+            Vector3 recordedPos = actions[_currentActionIndex].position;
+            Vector3 delta = recordedPos - transform.position;
+
+            if (delta.magnitude > correctionThreshold)
+            {
+                _controller.enabled = false;
+                transform.position = recordedPos;
+                _controller.enabled = true;
+            }
+        }
+
 
         _currentActionIndex++;
     }
