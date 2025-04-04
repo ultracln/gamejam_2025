@@ -18,6 +18,8 @@ public class PressButton : MonoBehaviour
     private bool isPressed = false;
     private Coroutine moveCoroutine;
 
+    public DoorOpen doorOpen;
+
     void Start()
     {
         originalPosition = transform.localPosition;
@@ -40,6 +42,7 @@ public class PressButton : MonoBehaviour
                 moveCoroutine = StartCoroutine(MoveToPosition(pressedPosition, pressDuration));
                 if (audioSource && pressSound)
                     audioSource.PlayOneShot(pressSound);
+                doorOpen.OpenDoor();
             }
         }
         else
@@ -49,6 +52,7 @@ public class PressButton : MonoBehaviour
                 isPressed = false;
                 if (moveCoroutine != null) StopCoroutine(moveCoroutine);
                 moveCoroutine = StartCoroutine(MoveToPosition(originalPosition, returnDuration));
+                doorOpen.CloseDoor();
             }
         }
     }
