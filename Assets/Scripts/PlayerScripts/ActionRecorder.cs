@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,13 +14,14 @@ public class ActionRecorder : MonoBehaviour
         public bool jump;
         public bool sprint;
         public bool rightClick;
+        public float cameraYaw;
     }
 
     public StarterAssets.StarterAssetsInputs input;
     public Transform playerTransform;
     public GameObject ghostPrefab; // Assign in Inspector
 
-    private List<PlayerAction> actions = new List<PlayerAction>();
+    public List<PlayerAction> actions = new List<PlayerAction>();
     private float timer = 0f;
     private float rightClickHold = 0f;
     private float requiredHoldTime = 2f;
@@ -34,9 +35,28 @@ public class ActionRecorder : MonoBehaviour
         if (LastRecordedActions != null && LastRecordedActions.Count > 0)
         {
             GameObject ghost = Instantiate(ghostPrefab);
-            var replayer = ghost.GetComponent<CloneReplayer>();
-            replayer.actions = LastRecordedActions;
+
+            ghost.transform.position = LastRecordedActions[0].position;
+
+            // NEW: Snap clone to ground
+            CharacterController cc = ghost.GetComponent<CharacterController>();
+            if (cc != null)
+            {
+                if (Physics.Raycast(ghost.transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 5f))
+                {
+                    Vector3 pos = ghost.transform.position;
+                    pos.y = hit.point.y + cc.height / 2f;
+                    ghost.transform.position = pos;
+                }
+            }
+
+            var cloneController = ghost.GetComponent<CloneController>();
+            if (cloneController != null)
+            {
+                cloneController.Init(this, LastRecordedActions);
+            }
         }
+
     }
 
     void Update()
@@ -45,6 +65,8 @@ public class ActionRecorder : MonoBehaviour
 
         if (playerTransform != null && input != null)
         {
+            float cameraYaw = Camera.main.transform.eulerAngles.y;
+
             actions.Add(new PlayerAction
             {
                 time = timer,
@@ -53,8 +75,10 @@ public class ActionRecorder : MonoBehaviour
                 lookInput = input.look,
                 jump = input.jump,
                 sprint = input.sprint,
-                rightClick = Input.GetMouseButton(1)
+                rightClick = Input.GetMouseButton(1),
+                cameraYaw = cameraYaw
             });
+
         }
 
         if (Input.GetMouseButton(1))
@@ -73,7 +97,22 @@ public class ActionRecorder : MonoBehaviour
 
     void DumpAndReload()
     {
-        LastRecordedActions = new List<PlayerAction>(actions);
+        // Ensure that actions are getting recorded correctly
+        if (actions != null && actions.Count > 0)
+        {
+            LastRecordedActions = new List<PlayerAction>(actions);
+            Debug.Log("Actions recorded and saved.");
+        }
+        else
+        {
+            Debug.LogError("No actions recorded.");
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+    public List<PlayerAction> GetActions()
+    {
+        return actions;
     }
 }
