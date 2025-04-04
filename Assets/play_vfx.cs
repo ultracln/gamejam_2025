@@ -11,24 +11,17 @@ public class play_vfx : MonoBehaviour
     public float effectDecreaseSpeed = 3f;  // Speed of effect fading
 
     public float chromaticAberrationMax = 1f;
-    public float chromaticAberrationMin = 0.3f;
+    public float chromaticAberrationMin = 0f;
 
-    public float lensDistortionMax = -0.6f;
-    public float lensDistortionMin = -0.2f;
+    public float lensDistortionMax = -0.75f;
+    public float lensDistortionMin = 0f;
 
     public float vignetteMax = 0.5f;
-    public float vignetteMin = 0.2f;
-
-    public float shakeAmount = 0.2f; // Amount of shake
-    public float shakeDuration = 0.5f; // Duration of shake
+    public float vignetteMin = 0f;
 
     private ChromaticAberration chromaticAberration;
     private LensDistortion lensDistortion;
     private Vignette vignette;
-
-    private Camera mainCamera;
-    private Vector3 originalPosition;
-    private bool isShaking;
 
     private float holdTime = 0f;
     private bool effectLocked = false;
@@ -43,9 +36,6 @@ public class play_vfx : MonoBehaviour
             globalVolume.profile.TryGet(out vignette);
         }
 
-        // Cache the main camera
-        mainCamera = Camera.main;
-        originalPosition = mainCamera.transform.position;
     }
 
     private void Update()
@@ -58,10 +48,6 @@ public class play_vfx : MonoBehaviour
             if (holdTime >= maxHoldTime)
             {
                 isFadingOut = true;
-            }
-            if (!isShaking)
-            {
-                StartCoroutine(ScreenShake());
             }
         }
         else if (isFadingOut)  // Smooth fade-out when time limit is reached
@@ -95,24 +81,4 @@ public class play_vfx : MonoBehaviour
             vignette.intensity.value = Mathf.Lerp(vignetteMin, vignetteMax, effectStrength);
     }
 
-    private IEnumerator ScreenShake()
-    {
-        isShaking = true;
-
-        float elapsedTime = 0f;
-
-        while (elapsedTime < shakeDuration)
-        {
-            // Randomly shake the camera position
-            Vector3 shakeOffset = originalPosition + new Vector3(Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount), 0);
-            mainCamera.transform.position = shakeOffset;
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Reset camera position after shake
-        mainCamera.transform.position = originalPosition;
-        isShaking = false;
-    }
 }
