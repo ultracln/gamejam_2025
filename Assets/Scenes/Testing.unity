@@ -177,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3264830818746027289, guid: d891652c9bc014d488f8c0fb6ec34955, type: 3}
       propertyPath: m_Name
-      value: Clone
+      value: Cube
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 1222774523}
   playerTransform: {fileID: 1222774528}
-  ghostPrefab: {fileID: 4055276851082861832, guid: a0b3387fb9c576e4c882c6db97f944d4, type: 3}
+  clonePrefab: {fileID: 4055276851082861832, guid: a0b3387fb9c576e4c882c6db97f944d4, type: 3}
   actions: []
 --- !u!4 &603782998
 Transform:

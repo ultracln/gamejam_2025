@@ -19,7 +19,7 @@ public class ActionRecorder : MonoBehaviour
 
     public StarterAssets.StarterAssetsInputs input;
     public Transform playerTransform;
-    public GameObject ghostPrefab; // Assign in Inspector
+    public GameObject clonePrefab; // Assign in Inspector
 
     public List<PlayerAction> actions = new List<PlayerAction>();
     private float timer = 0f;
@@ -34,23 +34,26 @@ public class ActionRecorder : MonoBehaviour
         // Spawn ghost if we have data
         if (LastRecordedActions != null && LastRecordedActions.Count > 0)
         {
-            GameObject ghost = Instantiate(ghostPrefab);
+            Vector3 startPosition = LastRecordedActions[0].position;
+            playerTransform.position = startPosition + playerTransform.right * -1f;
 
-            ghost.transform.position = LastRecordedActions[0].position;
+            GameObject clone = Instantiate(clonePrefab);
+
+            clone.transform.position = LastRecordedActions[0].position;
 
             // NEW: Snap clone to ground
-            CharacterController cc = ghost.GetComponent<CharacterController>();
+            CharacterController cc = clone.GetComponent<CharacterController>();
             if (cc != null)
             {
-                if (Physics.Raycast(ghost.transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 5f))
+                if (Physics.Raycast(clone.transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 5f))
                 {
-                    Vector3 pos = ghost.transform.position;
+                    Vector3 pos = clone.transform.position;
                     pos.y = hit.point.y + cc.height / 2f;
-                    ghost.transform.position = pos;
+                    clone.transform.position = pos;
                 }
             }
 
-            var cloneController = ghost.GetComponent<CloneController>();
+            var cloneController = clone.GetComponent<CloneController>();
             if (cloneController != null)
             {
                 cloneController.Init(this, LastRecordedActions);
