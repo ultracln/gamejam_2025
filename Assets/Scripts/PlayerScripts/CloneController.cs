@@ -71,6 +71,7 @@ public class CloneController : MonoBehaviour
         if (!isInitialized || actions == null || actions.Count == 0 || _currentActionIndex >= actions.Count) return;
 
         var action = actions[_currentActionIndex];
+        Debug.Log($"Replay Action #{_currentActionIndex}: pos={action.position}, move={action.moveInput}, sprint={action.sprint}, jump={action.jump}");
 
         // Ensure we are grounded properly at start
         if (_currentActionIndex == 0)
@@ -103,19 +104,15 @@ public class CloneController : MonoBehaviour
     void Move(ActionRecorder.PlayerAction action)
     {
         float targetSpeed = action.sprint ? SprintSpeed : MoveSpeed;
-        if (action.moveInput == Vector2.zero) targetSpeed = 0.0f;
-
-        float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-
-        if (currentHorizontalSpeed < targetSpeed - 0.1f || currentHorizontalSpeed > targetSpeed + 0.1f)
+        if (action.moveInput != Vector2.zero)
         {
-            _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed, Time.deltaTime * SpeedChangeRate);
-            _speed = Mathf.Round(_speed * 1000f) / 1000f;
+            _speed = Mathf.Lerp(_speed, targetSpeed, Time.deltaTime * SpeedChangeRate);
         }
         else
         {
-            _speed = targetSpeed;
+            _speed = Mathf.Lerp(_speed, 0f, Time.deltaTime * SpeedChangeRate);
         }
+
 
         _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
         if (_animationBlend < 0.01f) _animationBlend = 0f;
