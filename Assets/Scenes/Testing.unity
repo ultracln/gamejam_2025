@@ -446,6 +446,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4135013735270702856, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
   m_PrefabInstance: {fileID: 1222774521}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1222774528 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+  m_PrefabInstance: {fileID: 1222774521}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1351815163
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -640,6 +645,53 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1785598280}
   m_SourcePrefab: {fileID: 100100000, guid: aa38d7b0e367ecc4aac915dcfe957879, type: 3}
+--- !u!1 &1634172311
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1634172313}
+  - component: {fileID: 1634172312}
+  m_Layer: 0
+  m_Name: PlayerActionRecorder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1634172312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634172311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98795bae74e4f9842acc7c161d78ab89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {fileID: 1222774523}
+  playerTransform: {fileID: 1222774528}
+  ghostPrefab: {fileID: 3264830818746027289, guid: d891652c9bc014d488f8c0fb6ec34955, type: 3}
+--- !u!4 &1634172313
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634172311}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.187357, y: 1.696447, z: 19.430939}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1785598276 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: aa38d7b0e367ecc4aac915dcfe957879, type: 3}
@@ -763,3 +815,4 @@ SceneRoots:
   - {fileID: 1351815163}
   - {fileID: 1222774521}
   - {fileID: 958499496}
+  - {fileID: 1634172313}
