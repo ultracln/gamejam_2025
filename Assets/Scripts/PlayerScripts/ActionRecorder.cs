@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,43 +27,19 @@ public class ActionRecorder : MonoBehaviour
     private float rightClickHold = 0f;
     private float requiredHoldTime = 2f;
 
-    // Static so it survives scene reload
     public static List<PlayerAction> LastRecordedActions;
 
-    void Start()
+    private void OnEnable()
     {
-        // Spawn ghost if we have data
-        if (LastRecordedActions != null && LastRecordedActions.Count > 0)
-        {
-            Vector3 startPosition = LastRecordedActions[0].position;
-            playerTransform.position = startPosition + playerTransform.right * -1f;
-
-            GameObject clone = Instantiate(clonePrefab);
-
-            clone.transform.position = LastRecordedActions[0].position;
-
-            // NEW: Snap clone to ground
-            CharacterController cc = clone.GetComponent<CharacterController>();
-            if (cc != null)
-            {
-                if (Physics.Raycast(clone.transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 5f))
-                {
-                    Vector3 pos = clone.transform.position;
-                    pos.y = hit.point.y + cc.height / 2f;
-                    clone.transform.position = pos;
-                }
-            }
-
-            var cloneController = clone.GetComponent<CloneController>();
-            if (cloneController != null)
-            {
-                cloneController.Init(this, LastRecordedActions);
-            }
-        }
-
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void Update()
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void Update()
     {
         timer += Time.deltaTime;
 
@@ -81,7 +58,6 @@ public class ActionRecorder : MonoBehaviour
                 rightClick = Input.GetMouseButton(1),
                 cameraYaw = cameraYaw
             });
-
         }
 
         if (Input.GetMouseButton(1))
@@ -98,9 +74,8 @@ public class ActionRecorder : MonoBehaviour
         }
     }
 
-    void DumpAndReload()
+    private void DumpAndReload()
     {
-        // Ensure that actions are getting recorded correctly
         if (actions != null && actions.Count > 0)
         {
             LastRecordedActions = new List<PlayerAction>(actions);
@@ -110,9 +85,66 @@ public class ActionRecorder : MonoBehaviour
         {
             Debug.LogError("No actions recorded.");
         }
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (LastRecordedActions != null && LastRecordedActions.Count > 0)
+        {
+            StartCoroutine(RespawnPlayerAndClone());
+        }
+    }
+
+    private IEnumerator RespawnPlayerAndClone()
+    {
+        yield return null; // wait one frame
+
+        if (playerTransform == null)
+        {
+            Debug.LogError("Player Transform not assigned in ActionRecorder.");
+            yield break;
+        }
+
+        Vector3 startPosition = LastRecordedActions[0].position;
+
+        // Move the player
+        CharacterController cc = playerTransform.GetComponent<CharacterController>();
+        if (cc != null)
+        {
+            cc.enabled = false;
+            playerTransform.position = startPosition + playerTransform.right * -1f;
+            cc.enabled = true;
+        }
+        else
+        {
+            playerTransform.position = startPosition + playerTransform.right * -1f;
+        }
+
+        // Spawn the clone
+        GameObject clone = Instantiate(clonePrefab);
+        clone.transform.position = startPosition;
+
+        // Snap clone to ground if needed
+        CharacterController cc_clone = clone.GetComponent<CharacterController>();
+        if (cc_clone != null)
+        {
+            if (Physics.Raycast(clone.transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 5f))
+            {
+                Vector3 pos = clone.transform.position;
+                pos.y = hit.point.y + cc_clone.height / 2f;
+                clone.transform.position = pos;
+            }
+        }
+
+        // Initialize the clone controller
+        var cloneController = clone.GetComponent<CloneController>();
+        if (cloneController != null)
+        {
+            cloneController.Init(this, LastRecordedActions);
+        }
+    }
 
     public List<PlayerAction> GetActions()
     {
