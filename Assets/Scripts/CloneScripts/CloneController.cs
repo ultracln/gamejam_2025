@@ -182,7 +182,7 @@ public class CloneController : MonoBehaviour
         }
         else
         {
-            _jumpTimeoutDelta = 0.50f;
+            _jumpTimeoutDelta = 0.30f;
 
             if (_fallTimeoutDelta >= 0.0f)
             {

@@ -1033,7 +1033,7 @@ GameObject:
   - component: {fileID: -5111541175641215988}
   - component: {fileID: -809280938603217768}
   m_Layer: 8
-  m_Name: PlayerArmature
+  m_Name: Clone
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1130,7 +1130,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
   FootstepAudioVolume: 0.5
   MoveSpeed: 2
-  SprintSpeed: 5.335
+  SprintSpeed: 5
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
   JumpHeight: 1.2
