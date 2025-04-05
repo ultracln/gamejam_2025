@@ -19,8 +19,6 @@ public class play_teleport_effect_2 : MonoBehaviour
     private Bloom bloom;
     private Coroutine effectCoroutine;
 
-    public bool resetAfterFinish = false;
-
     void Start()
     {
         if (globalVolume != null && globalVolume.profile != null)
@@ -57,7 +55,7 @@ public class play_teleport_effect_2 : MonoBehaviour
         }
 
         // Final safety reset
-        if (bloom != null && resetAfterFinish == true)
+        if (bloom != null)
         {
             bloom.intensity.value = bloomMin;
             bloom.scatter.value = bloomScatterMin;
