@@ -18,7 +18,8 @@ public class PressButton : MonoBehaviour
     private bool isPressed = false;
     private Coroutine moveCoroutine;
 
-    public DoorOpen doorOpen;
+    public DoorOpen doorOpen = null;
+    public GameObject box = null;
 
     public string buttonID;
     public static string LastPressedButtonID;
@@ -57,7 +58,15 @@ public class PressButton : MonoBehaviour
                 if (audioSource && pressSound)
                     audioSource.PlayOneShot(pressSound);
 
-                doorOpen.OpenDoor();
+                if (box != null)
+                {
+                    box.SetActive(true);
+                }
+
+                if (doorOpen != null)
+                {
+                    doorOpen.OpenDoor();
+                }
             }
         }
         else
@@ -67,7 +76,16 @@ public class PressButton : MonoBehaviour
                 isPressed = false;
                 if (moveCoroutine != null) StopCoroutine(moveCoroutine);
                 moveCoroutine = StartCoroutine(MoveToPosition(originalPosition, returnDuration));
-                doorOpen.CloseDoor();
+
+                if (box != null)
+                {
+                    box.SetActive(false);
+                }
+
+                if (doorOpen != null)
+                {
+                    doorOpen.CloseDoor();
+                }
             }
         }
     }
@@ -101,7 +119,15 @@ public class PressButton : MonoBehaviour
             if (audioSource && pressSound)
                 audioSource.PlayOneShot(pressSound);
 
-            doorOpen.OpenDoor();
+            if (box != null)
+            {
+                box.SetActive(true);
+            }
+
+            if (doorOpen != null)
+            {
+                doorOpen.OpenDoor();
+            }
 
             // Optional: Return after hold duration
             StartCoroutine(ReturnAfterHold(holdDuration));
@@ -118,6 +144,14 @@ public class PressButton : MonoBehaviour
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
         moveCoroutine = StartCoroutine(MoveToPosition(originalPosition, returnDuration));
 
-        doorOpen.CloseDoor();
+        if (box != null)
+        {
+            box.SetActive(false);
+        }
+
+        if (doorOpen != null)
+        {
+            doorOpen.CloseDoor();
+        }
     }
 }
