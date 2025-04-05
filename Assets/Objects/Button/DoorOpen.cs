@@ -3,50 +3,50 @@ using System.Collections;
 
 public class DoorOpen : MonoBehaviour
 {
-    public float moveDistance = 1.5f;
-    public float moveDuration = 1.0f;
+    public float moveDistance = 1.5f;        // How far to move on local X
+    public float moveDuration = 1.0f;        // Time to move
 
     public AudioSource audioSource;
     public AudioClip doorSound;
 
-    private Vector3 closedPosition;
-    private Vector3 openPosition;
+    private Vector3 closedLocalPos;
+    private Vector3 openLocalPos;
 
     private Coroutine moveCoroutine;
 
-    private void Start()
+    private void Awake()
     {
-        closedPosition = transform.position;
-        openPosition = closedPosition + new Vector3(moveDistance, 0, 0);
+        closedLocalPos = transform.localPosition;
+        openLocalPos = new Vector3(closedLocalPos.x + moveDistance, closedLocalPos.y, closedLocalPos.z);
     }
 
     public void OpenDoor()
     {
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-        moveCoroutine = StartCoroutine(MoveDoor(openPosition));
+        moveCoroutine = StartCoroutine(MoveDoor(openLocalPos));
         PlaySound();
     }
 
     public void CloseDoor()
     {
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-        moveCoroutine = StartCoroutine(MoveDoor(closedPosition));
+        moveCoroutine = StartCoroutine(MoveDoor(closedLocalPos));
         PlaySound();
     }
 
-    private IEnumerator MoveDoor(Vector3 targetPosition)
+    private IEnumerator MoveDoor(Vector3 targetLocalPos)
     {
-        Vector3 startPosition = transform.position;
+        Vector3 startLocalPos = transform.localPosition;
         float elapsed = 0f;
 
         while (elapsed < moveDuration)
         {
-            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsed / moveDuration);
+            transform.localPosition = Vector3.Lerp(startLocalPos, targetLocalPos, elapsed / moveDuration);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        transform.position = targetPosition;
+        transform.localPosition = targetLocalPos;
     }
 
     private void PlaySound()
