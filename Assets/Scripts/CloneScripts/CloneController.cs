@@ -71,7 +71,14 @@ public class CloneController : MonoBehaviour
 
     void Update()
     {
-        if (!isInitialized || actions == null || actions.Count == 0 || _currentActionIndex >= actions.Count) return;
+        if (!isInitialized || actions == null || actions.Count == 0)
+            return;
+
+        if (_currentActionIndex >= actions.Count)
+        {
+            Disappear();
+            return;
+        }
 
         var action = actions[_currentActionIndex];
         Debug.Log($"Replay Action #{_currentActionIndex}: pos={action.position}, move={action.moveInput}, sprint={action.sprint}, jump={action.jump}");
@@ -106,7 +113,6 @@ public class CloneController : MonoBehaviour
                 _controller.enabled = true;
             }
         }
-
 
         _currentActionIndex++;
     }
@@ -232,4 +238,28 @@ public class CloneController : MonoBehaviour
             AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
         }
     }
+
+    private void Disappear()
+    {
+        Debug.Log("Clone finished its actions and will disappear.");
+
+        foreach (var renderer in GetComponentsInChildren<Renderer>())
+        {
+            renderer.enabled = false;
+        }
+
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = false;
+        }
+
+        if (_controller != null)
+            _controller.enabled = false;
+
+        if (_animator != null)
+            _animator.enabled = false;
+
+        this.enabled = false;
+    }
+
 }
