@@ -679,6 +679,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2599124284112674798}
+  - component: {fileID: 2785213607489618246}
   m_Layer: 8
   m_Name: PlayerArmature
   m_TagString: Player
@@ -704,6 +705,29 @@ Transform:
   - {fileID: 7316301007891744315}
   m_Father: {fileID: 8433796155893671490}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2785213607489618246
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3135682190873101021}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.17574629
+  m_Height: 1.7940415
+  m_Direction: 1
+  m_Center: {x: -0.006590456, y: 0.87952715, z: 0}
 --- !u!1 &3327904689461292631
 GameObject:
   m_ObjectHideFlags: 0
@@ -2299,7 +2323,7 @@ Transform:
   m_GameObject: {fileID: 8681830078839474261}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.094, y: -0.175, z: 1.13}
+  m_LocalPosition: {x: 0.094, y: -0.496, z: -10.73}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2571,6 +2595,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToStayOnTeleporter: 1
   targetObjectName: SM_Teleporter
+  targetColorBox: colorBox
+  highlightColors: []
+  checker: {fileID: 0}
+  simonSaysDoor: {fileID: 0}
+  simonSaysSequence: {fileID: 0}
 --- !u!1 &8875653591460596484
 GameObject:
   m_ObjectHideFlags: 0
