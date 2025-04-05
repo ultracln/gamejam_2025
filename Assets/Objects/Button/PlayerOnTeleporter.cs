@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
+using NUnit.Framework;
+using System;
 
 public class PlayerOnTeleporter : MonoBehaviour
 {
@@ -9,10 +12,16 @@ public class PlayerOnTeleporter : MonoBehaviour
     private float timeOnObject = 0f; // Tracks time player stays on the object
     public string targetColorBox = "colorBox";
     public Color[] highlightColors;
+    private Dictionary<int, Coroutine> activeCoroutines = new Dictionary<int, Coroutine>();
+    private Dictionary<int, Color> pastColors = new Dictionary<int, Color>(); // Make sure this is properly filled
 
-    public CubeColorChecker checker;
+
+    public CubeColorChecker checker = null;
     public SimonSaysDoor simonSaysDoor;
-    public SimonSaysSequence simonSaysSequence;
+    public SimonSaysSequence simonSaysSequence = null;
+
+    // This is your "history" of active highlights
+    private List<List<int>> highlightTimeline = new List<List<int>>();
 
     private void OnTriggerEnter(Collider other)
     {
@@ -59,24 +68,84 @@ public class PlayerOnTeleporter : MonoBehaviour
 
             if (int.TryParse(numberPart, out int boxNumber))
             {
-                StartCoroutine(ChangeColorTemporary(renderer, highlightColors[boxNumber], 1f));
-            }
-            else
-            {
-                Debug.LogWarning("Failed to parse number.");
+                // Store the original color if we haven't already
+                if (!pastColors.ContainsKey(boxNumber))
+                {
+                    pastColors[boxNumber] = renderer.material.color;
+                }
+
+                // Stop previous coroutine for this box, if any
+                if (activeCoroutines.TryGetValue(boxNumber, out Coroutine existingCoroutine))
+                {
+                    StopCoroutine(existingCoroutine);
+                    renderer.material.color = pastColors[boxNumber];
+                }
+
+                // Start new coroutine and store reference
+                Coroutine newCoroutine = StartCoroutine(ChangeColorTemporary(boxNumber, renderer, highlightColors[boxNumber], 3f));
+                activeCoroutines[boxNumber] = newCoroutine;
+
+                // Record current active highlight box numbers
+                List<int> currentActive = new List<int>(activeCoroutines.Keys);
+                highlightTimeline.Add(currentActive);
+
+                if (highlightTimeline.Count > 5)
+                {
+                    highlightTimeline.RemoveAt(0); // Remove the oldest
+                }
+
+                if (AreTimelinesEqual(highlightTimeline, RememberSequence.targetPattern))
+                {
+                    simonSaysDoor.OpenTheDoor();
+                }
             }
         }
     }
 
-    private IEnumerator ChangeColorTemporary(Renderer renderer, Color newColor, float duration)
+    bool AreTimelinesEqual(List<List<int>> a, List<List<int>> b)
     {
-        Color originalColor = renderer.material.color; // Store the original color
-        renderer.material.color = newColor; // Apply highlight color
+        if (a.Count != b.Count)
+            return false;
 
-        yield return new WaitForSeconds(duration); // Wait for 1 second
+        for (int i = 0; i < b.Count; i++)
+        {
+            List<int> listA = new List<int>(a[i]);
+            List<int> listB = new List<int>(b[i]);
 
-        renderer.material.color = originalColor; // Revert to original color
+            // Sort both to compare without caring about order inside each inner list
+            listA.Sort();
+            listB.Sort();
+
+            if (listA.Count != listB.Count)
+                return false;
+
+            for (int j = 0; j < listA.Count; j++)
+            {
+                if (listA[j] != listB[j])
+                    return false;
+            }
+        }
+
+        return true;
     }
+
+
+    private IEnumerator ChangeColorTemporary(int boxNumber, Renderer renderer, Color newColor, float duration)
+    {
+        renderer.material.color = newColor;
+        yield return new WaitForSeconds(duration);
+
+        // Revert to original color
+        if (pastColors.ContainsKey(boxNumber))
+        {
+            renderer.material.color = pastColors[boxNumber];
+        }
+
+        // Remove from coroutine tracking
+        activeCoroutines.Remove(boxNumber);
+    }
+
+
 
     private void OnTriggerStay(Collider other)
     {
