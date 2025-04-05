@@ -178,6 +178,11 @@ public class ActionRecorder : MonoBehaviour
                 cloneController.Init(this, actionList);
             }
 
+            if (clone.TryGetComponent(out PlayerOnTeleporter teleporterScript))
+            {
+                teleporterScript.InitChecker();
+            }
+
             currentSpawnPos = clone.transform.position + clone.transform.right * -1.0f;
         }
 
