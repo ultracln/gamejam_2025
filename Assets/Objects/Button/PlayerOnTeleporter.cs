@@ -6,12 +6,34 @@ public class PlayerOnTeleporter : MonoBehaviour
     public float timeToStayOnTeleporter = 1f;
     public string targetObjectName = "SM_Teleporter"; // Name of the object to check
     private float timeOnObject = 0f; // Tracks time player stays on the object
+    public string targetColorBox = "colorBox";
+
+    public CubeColorChecker checker;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == targetObjectName)
         {
             timeOnObject = 0f; // Reset timer when entering
+        }
+
+        if (other.gameObject.name.StartsWith(targetColorBox))
+        {
+            Renderer renderer = other.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                Color yellow;
+                Color gray;
+                ColorUtility.TryParseHtmlString("#FFBF3B", out yellow);
+                gray = new Color(0.684f, 0.684f, 0.684f, 1f);
+
+                if (renderer.material.color == yellow)
+                    renderer.material.color = gray;
+                else
+                    renderer.material.color = yellow;
+
+                checker.CompareCubeColors();
+            }
         }
     }
 
