@@ -82,7 +82,7 @@ public class PlayerOnTeleporter : MonoBehaviour
                 }
 
                 // Start new coroutine and store reference
-                Coroutine newCoroutine = StartCoroutine(ChangeColorTemporary(boxNumber, renderer, highlightColors[boxNumber], 3f));
+                Coroutine newCoroutine = StartCoroutine(ChangeColorTemporary(boxNumber, renderer, highlightColors[boxNumber], 1f));
                 activeCoroutines[boxNumber] = newCoroutine;
 
                 // Record current active highlight box numbers
