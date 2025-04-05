@@ -17,7 +17,7 @@ public class PlayerOnTeleporter : MonoBehaviour
 
 
     public CubeColorChecker checker = null;
-    public SimonSaysDoor simonSaysDoor;
+    public SimonSaysDoor simonSaysDoor = null;
     public SimonSaysSequence simonSaysSequence = null;
 
     // This is your "history" of active highlights
@@ -33,8 +33,25 @@ public class PlayerOnTeleporter : MonoBehaviour
                 Debug.LogWarning("CubeColorChecker not found in scene.");
             }
         }
-    }
 
+        if (simonSaysDoor == null)
+        {
+            simonSaysDoor = FindObjectOfType<SimonSaysDoor>();
+            if (simonSaysDoor == null)
+            {
+                Debug.LogWarning("simonSaysDoor not found in scene.");
+            }
+        }
+
+        if (simonSaysSequence == null)
+        {
+            simonSaysSequence = FindObjectOfType<SimonSaysSequence>();
+            if (simonSaysSequence == null)
+            {
+                Debug.LogWarning("simonSaysSequence not found in scene.");
+            }
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -102,7 +119,7 @@ public class PlayerOnTeleporter : MonoBehaviour
                 List<int> currentActive = new List<int>(activeCoroutines.Keys);
                 highlightTimeline.Add(currentActive);
 
-                if (highlightTimeline.Count > 5)
+                if (highlightTimeline.Count > 4)
                 {
                     highlightTimeline.RemoveAt(0); // Remove the oldest
                 }
@@ -117,6 +134,7 @@ public class PlayerOnTeleporter : MonoBehaviour
 
     bool AreTimelinesEqual(List<List<int>> a, List<List<int>> b)
     {
+        if (a == null || b == null) return false;   
         if (a.Count != b.Count)
             return false;
 

@@ -1143,7 +1143,7 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 1
-  actionRecorder: {fileID: 9025136686856876163, guid: f4bd66e280685404ab75949e8d779e56, type: 3}
+  actionRecorder: {fileID: 0}
 --- !u!136 &4417878754333716665
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1209,7 +1209,11 @@ MonoBehaviour:
   timeToStayOnTeleporter: 1
   targetObjectName: SM_Teleporter
   targetColorBox: colorBox
-  highlightColors: []
+  highlightColors:
+  - {r: 0.23921569, g: 0.6745098, b: 1, a: 0}
+  - {r: 0.5686275, g: 1, b: 0.24705882, a: 0}
+  - {r: 1, g: 0.32941177, b: 0.32941177, a: 0}
+  - {r: 0.96862745, g: 1, b: 0.32156864, a: 0}
   checker: {fileID: 0}
   simonSaysDoor: {fileID: 0}
   simonSaysSequence: {fileID: 0}
