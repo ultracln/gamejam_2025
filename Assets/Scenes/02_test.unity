@@ -2754,6 +2754,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8182842249801242699, guid: f308354cb31e0114585b92dd22d20065, type: 3}
+      propertyPath: maxClones
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8663602835773166948, guid: f308354cb31e0114585b92dd22d20065, type: 3}
       propertyPath: m_Name
       value: CloneManager

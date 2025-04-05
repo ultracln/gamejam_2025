@@ -69,13 +69,6 @@ public class ActionRecorder : MonoBehaviour
             });
         }
 
-        // Smooth-style hold timer (similar to play_vfx)
-        if (CloneManager.allClones.Count >= cloneManager.maxClones)
-        {
-            rightClickHold = Mathf.Max(0f, rightClickHold - Time.deltaTime * effectDecreaseSpeed);
-            return;
-        }
-
         if (Input.GetMouseButton(1))
         {
             rightClickHold += Time.deltaTime;
@@ -110,6 +103,20 @@ public class ActionRecorder : MonoBehaviour
         {
             cloneManager.AddClone(actions);
             Debug.Log("Actions recorded and added to clone history.");
+
+            // Trim oldest clone if we exceed the limit
+            while (CloneManager.allClones.Count > cloneManager.maxClones)
+            {
+                CloneManager.allClones.RemoveAt(0);
+
+                if (CloneManager.allCloneObjects.Count > 0)
+                {
+                    var oldest = CloneManager.allCloneObjects[0];
+                    CloneManager.allCloneObjects.RemoveAt(0);
+                    if (oldest != null) Destroy(oldest);
+                    Debug.Log("Destroyed excess clone.");
+                }
+            }
         }
         else
         {
@@ -118,6 +125,7 @@ public class ActionRecorder : MonoBehaviour
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -132,7 +140,21 @@ public class ActionRecorder : MonoBehaviour
         if (allClones.Count == 0 || allClones[^1].Count == 0)
             yield break;
 
+        // Clean up extra clones before respawning
+        while (allClones.Count > cloneManager.maxClones)
+        {
+            allClones.RemoveAt(0);
+            if (CloneManager.allCloneObjects.Count > 0)
+            {
+                var oldest = CloneManager.allCloneObjects[0];
+                CloneManager.allCloneObjects.RemoveAt(0);
+                if (oldest != null) Destroy(oldest);
+                Debug.Log("clone destroyed");
+            }
+        }
+
         Vector3 currentSpawnPos = allClones[0][0].position;
+
 
         foreach (var actionList in allClones)
         {
@@ -140,6 +162,8 @@ public class ActionRecorder : MonoBehaviour
 
             GameObject clone = Instantiate(clonePrefab);
             clone.transform.position = currentSpawnPos;
+
+            cloneManager.RegisterCloneObject(clone);
 
             if (clone.TryGetComponent(out CharacterController cc_clone) &&
                 Physics.Raycast(clone.transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 5f))
