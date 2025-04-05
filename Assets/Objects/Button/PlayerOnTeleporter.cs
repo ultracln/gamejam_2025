@@ -213,6 +213,7 @@ public class PlayerOnTeleporter : MonoBehaviour
             // Check if the next scene exists before loading (recommended)
             if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             {
+                StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(nextSceneName);
             }
             else

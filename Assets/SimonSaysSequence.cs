@@ -54,15 +54,16 @@ public class SimonSaysSequence : MonoBehaviour
             }
         }
 
-        RememberSequence.targetPattern = sequence.Select(inner => new List<int>(inner)).ToList();
+        if (RememberSequence.targetPattern  == null)
+            RememberSequence.targetPattern = sequence.Select(inner => new List<int>(inner)).ToList();
 
-        //// Debug print the sequence
-        //Debug.Log("Generated Sequence: ");
-        //foreach (var step in sequence)
-        //{
-        //    string stepString = string.Join(", ", step);
-        //    Debug.Log(stepString);
-        //}
+        // Debug print the sequence
+        Debug.Log("Generated Sequence: ");
+        foreach (var step in RememberSequence.targetPattern)
+        {
+            string stepString = string.Join(", ", step);
+            Debug.Log(stepString);
+        }
 
         // Play the sequence
         foreach (List<int> step in sequence)

@@ -16,7 +16,7 @@ public class LevelButtons : MonoBehaviour
             // Check if the scene exists before attempting to load it
             if (Application.CanStreamedLevelBeLoaded(sceneName))
             {
-                
+                StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(sceneName);
             }
             else
