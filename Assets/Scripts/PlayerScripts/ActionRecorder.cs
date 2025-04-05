@@ -123,6 +123,7 @@ public class ActionRecorder : MonoBehaviour
             Debug.LogWarning("No actions recorded this round.");
         }
 
+        StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

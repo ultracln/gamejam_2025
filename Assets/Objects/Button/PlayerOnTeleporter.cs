@@ -16,6 +16,7 @@ public class PlayerOnTeleporter : MonoBehaviour
     private Dictionary<int, Color> pastColors = new Dictionary<int, Color>(); // Make sure this is properly filled
 
 
+    public CloneManager cloneManager;
     public CubeColorChecker checker = null;
     public SimonSaysDoor simonSaysDoor = null;
     public SimonSaysSequence simonSaysSequence = null;
@@ -213,6 +214,8 @@ public class PlayerOnTeleporter : MonoBehaviour
             // Check if the next scene exists before loading (recommended)
             if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             {
+                cloneManager.Clear();
+                StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(nextSceneName);
             }
             else
