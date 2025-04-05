@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SimonSaysSequence : MonoBehaviour
@@ -53,13 +54,15 @@ public class SimonSaysSequence : MonoBehaviour
             }
         }
 
-        // Debug print the sequence
-        Debug.Log("Generated Sequence: ");
-        foreach (var step in sequence)
-        {
-            string stepString = string.Join(", ", step);
-            Debug.Log("Step: [" + stepString + "]");
-        }
+        RememberSequence.targetPattern = sequence.Select(inner => new List<int>(inner)).ToList();
+
+        //// Debug print the sequence
+        //Debug.Log("Generated Sequence: ");
+        //foreach (var step in sequence)
+        //{
+        //    string stepString = string.Join(", ", step);
+        //    Debug.Log(stepString);
+        //}
 
         // Play the sequence
         foreach (List<int> step in sequence)
