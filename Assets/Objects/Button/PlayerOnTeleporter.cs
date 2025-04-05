@@ -23,6 +23,19 @@ public class PlayerOnTeleporter : MonoBehaviour
     // This is your "history" of active highlights
     private List<List<int>> highlightTimeline = new List<List<int>>();
 
+    public void InitChecker()
+    {
+        if (checker == null)
+        {
+            checker = FindObjectOfType<CubeColorChecker>();
+            if (checker == null)
+            {
+                Debug.LogWarning("CubeColorChecker not found in scene.");
+            }
+        }
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == targetObjectName)

@@ -4831,6 +4831,10 @@ PrefabInstance:
       propertyPath: checker
       value: 
       objectReference: {fileID: 230030345}
+    - target: {fileID: 8399004477682186550, guid: cc61fc7d866f76948990ebd25fe1cd49, type: 3}
+      propertyPath: m_Radius
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 8433796155893671490, guid: cc61fc7d866f76948990ebd25fe1cd49, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.094
@@ -9241,6 +9245,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Play glitch effect
       objectReference: {fileID: 0}
+    - target: {fileID: 6187205754521762160, guid: 3816db30101838140b2d7c988ed2d828, type: 3}
+      propertyPath: soundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b6a70b0dad46c7b4cb3777f6e18205c6, type: 3}
     - target: {fileID: 6187205754521762160, guid: 3816db30101838140b2d7c988ed2d828, type: 3}
       propertyPath: cloneManager
       value: 

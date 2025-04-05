@@ -30,8 +30,8 @@ public class play_vfx : MonoBehaviour
     private bool effectLocked = false;
     private bool isFadingOut = false;
 
-    private bool soundPlayed = false;  // To track if sound has been played
-    private AudioSource currentAudioSource;
+    /*private bool soundPlayed = false;  // To track if sound has been played
+    private AudioSource currentAudioSource;*/
 
     private void Start()
     {
@@ -48,7 +48,7 @@ public class play_vfx : MonoBehaviour
 
         if (Input.GetMouseButton(1) && !effectLocked && !isFadingOut)
         {
-            // Play sound if it's not already played
+            /*// Play sound if it's not already played
             if (!soundPlayed)
             {
                 currentAudioSource = SFXManager.instance.playSoundFX(soundClip, transform, 1f); // Store the reference to the AudioSource
@@ -58,7 +58,7 @@ public class play_vfx : MonoBehaviour
             {
                 // If the sound is paused, unpause it
                 currentAudioSource.UnPause();
-            }
+            }*/
 
             holdTime += Time.deltaTime;
 
@@ -80,14 +80,14 @@ public class play_vfx : MonoBehaviour
         }
         else if (!Input.GetMouseButton(1))
         {
-            if (currentAudioSource != null && currentAudioSource.isPlaying)
+            /*if (currentAudioSource != null && currentAudioSource.isPlaying)
             {
                 // Pause the sound when the mouse button is released
                 currentAudioSource.Pause();
             }
 
             // Reset sound flag when the effect ends
-            soundPlayed = false;
+            soundPlayed = false;*/
 
             holdTime -= Time.deltaTime * effectDecreaseSpeed;
             effectLocked = false;
@@ -111,7 +111,7 @@ public class play_vfx : MonoBehaviour
         holdTime = 0f;
         isFadingOut = false;
         effectLocked = false;
-        soundPlayed = false;  // Reset sound flag
+        // soundPlayed = false;  // Reset sound flag
 
         if (chromaticAberration != null)
             chromaticAberration.intensity.value = chromaticAberrationMin;
