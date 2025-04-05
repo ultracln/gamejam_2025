@@ -81,7 +81,7 @@ public class CloneController : MonoBehaviour
         }
 
         var action = actions[_currentActionIndex];
-        Debug.Log($"Replay Action #{_currentActionIndex}: pos={action.position}, move={action.moveInput}, sprint={action.sprint}, jump={action.jump}");
+        //Debug.Log($"Replay Action #{_currentActionIndex}: pos={action.position}, move={action.moveInput}, sprint={action.sprint}, jump={action.jump}");
 
         // Ensure we are grounded properly at start
         if (_currentActionIndex == 0)
@@ -98,6 +98,20 @@ public class CloneController : MonoBehaviour
 
         Move(action);
         JumpAndGravity(action);
+
+        if (action.leftClick && !string.IsNullOrEmpty(action.buttonID))
+        {
+            Debug.Log(action.buttonID);
+            PressButton[] allButtons = GameObject.FindObjectsOfType<PressButton>();
+            foreach (var button in allButtons)
+            {
+                if (button.buttonID == action.buttonID)
+                {
+                    button.TriggerPressExternally(action.leftClickHoldDuration);
+                    break;
+                }
+            }
+        }
 
         // --- Soft position correction to reduce drift/offset ---
         if (_currentActionIndex % correctionInterval == 0 && _currentActionIndex < actions.Count &&

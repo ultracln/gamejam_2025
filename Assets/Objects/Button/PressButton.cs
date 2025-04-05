@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class PressButton : MonoBehaviour
@@ -20,6 +20,11 @@ public class PressButton : MonoBehaviour
 
     public DoorOpen doorOpen;
 
+    public string buttonID;
+    public static string LastPressedButtonID;
+
+    private bool isExternallyPressed = false;
+
     void Start()
     {
         originalPosition = transform.localPosition;
@@ -27,6 +32,12 @@ public class PressButton : MonoBehaviour
     }
 
     void Update()
+    {
+        if (!isExternallyPressed)
+            HandlePlayerInput();
+    }
+
+    private void HandlePlayerInput()
     {
         Ray ray = new Ray(playerCamera.position, playerCamera.forward);
         RaycastHit hit;
@@ -37,11 +48,15 @@ public class PressButton : MonoBehaviour
         {
             if (!isPressed)
             {
+                LastPressedButtonID = buttonID;
+
                 isPressed = true;
                 if (moveCoroutine != null) StopCoroutine(moveCoroutine);
                 moveCoroutine = StartCoroutine(MoveToPosition(pressedPosition, pressDuration));
+
                 if (audioSource && pressSound)
                     audioSource.PlayOneShot(pressSound);
+
                 doorOpen.OpenDoor();
             }
         }
@@ -70,5 +85,39 @@ public class PressButton : MonoBehaviour
         }
 
         transform.localPosition = targetPosition;
+    }
+
+    public void TriggerPressExternally(float holdDuration)
+    {
+        if (!isPressed)
+        {
+            Debug.Log("Clone pressed button");
+            isPressed = true;
+            isExternallyPressed = true;
+
+            if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+            moveCoroutine = StartCoroutine(MoveToPosition(pressedPosition, pressDuration));
+
+            if (audioSource && pressSound)
+                audioSource.PlayOneShot(pressSound);
+
+            doorOpen.OpenDoor();
+
+            // Optional: Return after hold duration
+            StartCoroutine(ReturnAfterHold(holdDuration));
+        }
+    }
+
+    private IEnumerator ReturnAfterHold(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        isPressed = false;
+        isExternallyPressed = false;
+
+        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+        moveCoroutine = StartCoroutine(MoveToPosition(originalPosition, returnDuration));
+
+        doorOpen.CloseDoor();
     }
 }

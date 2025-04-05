@@ -15,7 +15,10 @@ public class ActionRecorder : MonoBehaviour
         public bool jump;
         public bool sprint;
         public bool rightClick;
+        public bool leftClick;
+        public float leftClickHoldDuration;
         public float cameraYaw;
+        public string buttonID;
     }
 
     public StarterAssets.StarterAssetsInputs input;
@@ -25,6 +28,7 @@ public class ActionRecorder : MonoBehaviour
 
     public float maxHoldTime = 2f;  // Exact time before auto-reset
     public float effectDecreaseSpeed = 3f;  // Speed of effect fading
+    private float leftClickHoldTime = 0f;
 
     private float timer = 0f;
     private float rightClickHold = 0f;
@@ -58,7 +62,10 @@ public class ActionRecorder : MonoBehaviour
                 jump = input.jump,
                 sprint = input.sprint,
                 rightClick = Input.GetMouseButton(1),
-                cameraYaw = cameraYaw
+                leftClick = Input.GetMouseButton(0),
+                leftClickHoldDuration = leftClickHoldTime,
+                cameraYaw = cameraYaw,
+                buttonID = PressButton.LastPressedButtonID
             });
         }
 
@@ -84,6 +91,16 @@ public class ActionRecorder : MonoBehaviour
         }
 
         rightClickHold = Mathf.Clamp(rightClickHold, 0f, maxHoldTime);
+
+        if (Input.GetMouseButton(0))
+        {
+            leftClickHoldTime += Time.deltaTime;
+        }
+        else
+        {
+            leftClickHoldTime = 0f;
+        }
+
     }
 
 
