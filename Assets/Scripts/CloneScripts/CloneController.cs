@@ -103,6 +103,7 @@ public class CloneController : MonoBehaviour
         {
             Debug.Log(action.buttonID);
             PressButton[] allButtons = GameObject.FindObjectsOfType<PressButton>();
+            //PressButton[] allButtons = GameObject.FindObjectsByType<PressButton>((FindObjectsSortMode)FindObjectsInactive.Include);
             foreach (var button in allButtons)
             {
                 if (button.buttonID == action.buttonID)
