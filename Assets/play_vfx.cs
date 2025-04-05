@@ -5,6 +5,8 @@ using UnityEngine.Rendering.Universal;
 
 public class play_vfx : MonoBehaviour
 {
+    public AudioClip soundClip;
+
     public Volume globalVolume;
     public float maxHoldTime = 2f;  // Exact time before auto-reset
     public float effectDecreaseSpeed = 3f;  // Speed of effect fading
@@ -28,6 +30,9 @@ public class play_vfx : MonoBehaviour
     private bool effectLocked = false;
     private bool isFadingOut = false;
 
+    private bool soundPlayed = false;  // To track if sound has been played
+    private AudioSource currentAudioSource;
+
     private void Start()
     {
         if (globalVolume != null && globalVolume.profile != null)
@@ -36,20 +41,25 @@ public class play_vfx : MonoBehaviour
             globalVolume.profile.TryGet(out lensDistortion);
             globalVolume.profile.TryGet(out vignette);
         }
-
     }
 
     private void Update()
     {
-        // Abort effect entirely if max clones are already reached
-        /*if (CloneManager.allClones.Count >= cloneManager.maxClones)
-        {
-            ResetEffects(); // Optional: fade out instantly if already active
-            return;
-        }*/
 
         if (Input.GetMouseButton(1) && !effectLocked && !isFadingOut)
         {
+            // Play sound if it's not already played
+            if (!soundPlayed)
+            {
+                currentAudioSource = SFXManager.instance.playSoundFX(soundClip, transform, 1f); // Store the reference to the AudioSource
+                soundPlayed = true;
+            }
+            else if (currentAudioSource != null && !currentAudioSource.isPlaying)
+            {
+                // If the sound is paused, unpause it
+                currentAudioSource.UnPause();
+            }
+
             holdTime += Time.deltaTime;
 
             if (holdTime >= maxHoldTime)
@@ -70,6 +80,15 @@ public class play_vfx : MonoBehaviour
         }
         else if (!Input.GetMouseButton(1))
         {
+            if (currentAudioSource != null && currentAudioSource.isPlaying)
+            {
+                // Pause the sound when the mouse button is released
+                currentAudioSource.Pause();
+            }
+
+            // Reset sound flag when the effect ends
+            soundPlayed = false;
+
             holdTime -= Time.deltaTime * effectDecreaseSpeed;
             effectLocked = false;
         }
@@ -92,6 +111,7 @@ public class play_vfx : MonoBehaviour
         holdTime = 0f;
         isFadingOut = false;
         effectLocked = false;
+        soundPlayed = false;  // Reset sound flag
 
         if (chromaticAberration != null)
             chromaticAberration.intensity.value = chromaticAberrationMin;
