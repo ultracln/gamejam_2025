@@ -1,16 +1,23 @@
 using UnityEngine;
+using TMPro; // only if you're using TextMeshPro
 
 public class texttest : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public GameObject tutorialText; // drag the Text object here in Inspector
+
     void Start()
     {
-        
+        // Show text at start
+        // tutorialText.SetActive(false);
+        tutorialText.GetComponent<CanvasGroup>().alpha = 0f;
+
+
+        // Hide after a few seconds (optional)
+        // Invoke("HideText", 5f);
     }
 
-    // Update is called once per frame
-    void Update()
+    void HideText()
     {
-        
+        tutorialText.SetActive(false);
     }
 }
