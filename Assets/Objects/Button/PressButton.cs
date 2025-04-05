@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class PressButton : MonoBehaviour
@@ -18,7 +18,13 @@ public class PressButton : MonoBehaviour
     private bool isPressed = false;
     private Coroutine moveCoroutine;
 
-    public DoorOpen doorOpen;
+    public DoorOpen doorOpen = null;
+    public GameObject box = null;
+
+    public string buttonID;
+    public static string LastPressedButtonID;
+
+    private bool isExternallyPressed = false;
 
     void Start()
     {
@@ -27,6 +33,12 @@ public class PressButton : MonoBehaviour
     }
 
     void Update()
+    {
+        if (!isExternallyPressed)
+            HandlePlayerInput();
+    }
+
+    private void HandlePlayerInput()
     {
         Ray ray = new Ray(playerCamera.position, playerCamera.forward);
         RaycastHit hit;
@@ -37,12 +49,24 @@ public class PressButton : MonoBehaviour
         {
             if (!isPressed)
             {
+                LastPressedButtonID = buttonID;
+
                 isPressed = true;
                 if (moveCoroutine != null) StopCoroutine(moveCoroutine);
                 moveCoroutine = StartCoroutine(MoveToPosition(pressedPosition, pressDuration));
+
                 if (audioSource && pressSound)
                     audioSource.PlayOneShot(pressSound);
-                doorOpen.OpenDoor();
+
+                if (box != null)
+                {
+                    box.SetActive(true);
+                }
+
+                if (doorOpen != null)
+                {
+                    doorOpen.OpenDoor();
+                }
             }
         }
         else
@@ -52,7 +76,16 @@ public class PressButton : MonoBehaviour
                 isPressed = false;
                 if (moveCoroutine != null) StopCoroutine(moveCoroutine);
                 moveCoroutine = StartCoroutine(MoveToPosition(originalPosition, returnDuration));
-                doorOpen.CloseDoor();
+
+                if (box != null)
+                {
+                    box.SetActive(false);
+                }
+
+                if (doorOpen != null)
+                {
+                    doorOpen.CloseDoor();
+                }
             }
         }
     }
@@ -70,5 +103,55 @@ public class PressButton : MonoBehaviour
         }
 
         transform.localPosition = targetPosition;
+    }
+
+    public void TriggerPressExternally(float holdDuration)
+    {
+        if (!isPressed)
+        {
+            Debug.Log("Clone pressed button");
+            isPressed = true;
+            isExternallyPressed = true;
+
+            if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+            moveCoroutine = StartCoroutine(MoveToPosition(pressedPosition, pressDuration));
+
+            if (audioSource && pressSound)
+                audioSource.PlayOneShot(pressSound);
+
+            if (box != null)
+            {
+                box.SetActive(true);
+            }
+
+            if (doorOpen != null)
+            {
+                doorOpen.OpenDoor();
+            }
+
+            // Optional: Return after hold duration
+            StartCoroutine(ReturnAfterHold(holdDuration));
+        }
+    }
+
+    private IEnumerator ReturnAfterHold(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        isPressed = false;
+        isExternallyPressed = false;
+
+        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+        moveCoroutine = StartCoroutine(MoveToPosition(originalPosition, returnDuration));
+
+        if (box != null)
+        {
+            box.SetActive(false);
+        }
+
+        if (doorOpen != null)
+        {
+            doorOpen.CloseDoor();
+        }
     }
 }
