@@ -6,7 +6,6 @@ using UnityEngine.Rendering.Universal;
 public class play_vfx : MonoBehaviour
 {
     public Volume globalVolume;
-    public KeyCode activationKey = KeyCode.R;
     public float maxHoldTime = 2f;  // Exact time before auto-reset
     public float effectDecreaseSpeed = 3f;  // Speed of effect fading
 
@@ -22,6 +21,8 @@ public class play_vfx : MonoBehaviour
     private ChromaticAberration chromaticAberration;
     private LensDistortion lensDistortion;
     private Vignette vignette;
+
+    public CloneManager cloneManager;
 
     private float holdTime = 0f;
     private bool effectLocked = false;
@@ -40,17 +41,23 @@ public class play_vfx : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(activationKey) && !effectLocked && !isFadingOut)
+        // Abort effect entirely if max clones are already reached
+        if (CloneManager.allClones.Count >= cloneManager.maxClones)
+        {
+            ResetEffects(); // Optional: fade out instantly if already active
+            return;
+        }
+
+        if (Input.GetMouseButton(1) && !effectLocked && !isFadingOut)
         {
             holdTime += Time.deltaTime;
 
-            // If max hold time is reached, start fading out
             if (holdTime >= maxHoldTime)
             {
                 isFadingOut = true;
             }
         }
-        else if (isFadingOut)  // Smooth fade-out when time limit is reached
+        else if (isFadingOut)
         {
             holdTime -= Time.deltaTime * effectDecreaseSpeed;
 
@@ -58,19 +65,18 @@ public class play_vfx : MonoBehaviour
             {
                 holdTime = 0f;
                 isFadingOut = false;
-                effectLocked = true; // Prevent reactivation until key is released
+                effectLocked = true;
             }
         }
-        else if (!Input.GetKey(activationKey)) // Key released
+        else if (!Input.GetMouseButton(1))
         {
             holdTime -= Time.deltaTime * effectDecreaseSpeed;
-            effectLocked = false; // Unlock when key is released
+            effectLocked = false;
         }
 
-        holdTime = Mathf.Clamp(holdTime, 0f, maxHoldTime);  // Keep within bounds
-        float effectStrength = holdTime / maxHoldTime;  // Normalize (0 to 1)
+        holdTime = Mathf.Clamp(holdTime, 0f, maxHoldTime);
+        float effectStrength = holdTime / maxHoldTime;
 
-        // Apply post-processing effects
         if (chromaticAberration != null)
             chromaticAberration.intensity.value = Mathf.Lerp(chromaticAberrationMin, chromaticAberrationMax, Mathf.Pow(effectStrength, 2));
 
@@ -81,4 +87,19 @@ public class play_vfx : MonoBehaviour
             vignette.intensity.value = Mathf.Lerp(vignetteMin, vignetteMax, effectStrength);
     }
 
+    private void ResetEffects()
+    {
+        holdTime = 0f;
+        isFadingOut = false;
+        effectLocked = false;
+
+        if (chromaticAberration != null)
+            chromaticAberration.intensity.value = chromaticAberrationMin;
+
+        if (lensDistortion != null)
+            lensDistortion.intensity.value = lensDistortionMin;
+
+        if (vignette != null)
+            vignette.intensity.value = vignetteMin;
+    }
 }
