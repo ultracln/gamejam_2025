@@ -23,14 +23,13 @@ public class ActionRecorder : MonoBehaviour
     public GameObject clonePrefab;
     public CloneManager cloneManager;
 
+    public float maxHoldTime = 2f;  // Exact time before auto-reset
+    public float effectDecreaseSpeed = 3f;  // Speed of effect fading
+
     private float timer = 0f;
     private float rightClickHold = 0f;
-    private float requiredHoldTime = 2f;
 
     public List<PlayerAction> actions = new List<PlayerAction>();
-
-    // Static so it survives reload
-    public static List<List<PlayerAction>> CloneActionHistory = new List<List<PlayerAction>>();
 
     private void OnEnable()
     {
@@ -63,31 +62,36 @@ public class ActionRecorder : MonoBehaviour
             });
         }
 
+        // Smooth-style hold timer (similar to play_vfx)
+        if (CloneManager.allClones.Count >= cloneManager.maxClones)
+        {
+            rightClickHold = Mathf.Max(0f, rightClickHold - Time.deltaTime * effectDecreaseSpeed);
+            return;
+        }
+
         if (Input.GetMouseButton(1))
         {
             rightClickHold += Time.deltaTime;
-            if (rightClickHold >= requiredHoldTime)
+
+            if (rightClickHold >= maxHoldTime)
             {
-                // maxClones number reached 
-                if (CloneActionHistory.Count < cloneManager.maxClones)
-                {
-                    DumpAndReload();
-                }
+                DumpAndReload();
             }
         }
         else
         {
-            rightClickHold = 0f;
+            rightClickHold -= Time.deltaTime * 3f;
         }
+
+        rightClickHold = Mathf.Clamp(rightClickHold, 0f, maxHoldTime);
     }
+
 
     private void DumpAndReload()
     {
         if (actions.Count > 0)
         {
-            // Add current session to history
-            CloneActionHistory.Add(new List<PlayerAction>(actions));
-
+            cloneManager.AddClone(actions);
             Debug.Log("Actions recorded and added to clone history.");
         }
         else
@@ -107,44 +111,36 @@ public class ActionRecorder : MonoBehaviour
     {
         yield return null;
 
-        if (CloneActionHistory.Count == 0 || CloneActionHistory[^1].Count == 0)
-        {
+        var allClones = cloneManager.GetAllClones();
+        if (allClones.Count == 0 || allClones[^1].Count == 0)
             yield break;
-        }
 
-        // Starting point: first recording’s position
-        Vector3 currentSpawnPos = CloneActionHistory[0][0].position;
+        Vector3 currentSpawnPos = allClones[0][0].position;
 
-        // Spawn all clones one to the right of the previous
-        foreach (var actionList in CloneActionHistory)
+        foreach (var actionList in allClones)
         {
             if (actionList == null || actionList.Count == 0) continue;
 
             GameObject clone = Instantiate(clonePrefab);
             clone.transform.position = currentSpawnPos;
 
-            // Snap clone to ground if needed
-            CharacterController cc_clone = clone.GetComponent<CharacterController>();
-            if (cc_clone != null && Physics.Raycast(clone.transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 5f))
+            if (clone.TryGetComponent(out CharacterController cc_clone) &&
+                Physics.Raycast(clone.transform.position + Vector3.up, Vector3.down, out RaycastHit hit, 5f))
             {
                 Vector3 pos = clone.transform.position;
                 pos.y = hit.point.y + cc_clone.height / 2f;
                 clone.transform.position = pos;
             }
 
-            var cloneController = clone.GetComponent<CloneController>();
-            if (cloneController != null)
+            if (clone.TryGetComponent(out CloneController cloneController))
             {
                 cloneController.Init(this, actionList);
             }
 
-            // Move next spawn position to the left of the current clone
             currentSpawnPos = clone.transform.position + clone.transform.right * -1.0f;
         }
 
-        // Move the player to the left of the last clone
-        CharacterController cc = playerTransform.GetComponent<CharacterController>();
-        if (cc != null)
+        if (playerTransform.TryGetComponent(out CharacterController cc))
         {
             cc.enabled = false;
             playerTransform.position = currentSpawnPos;
@@ -155,8 +151,6 @@ public class ActionRecorder : MonoBehaviour
             playerTransform.position = currentSpawnPos;
         }
     }
-
-
 
     public List<PlayerAction> GetActions()
     {
