@@ -23,16 +23,15 @@ public class SimonSaysSequence : MonoBehaviour
         }
     }
 
-    void Update()
+    public void playColors()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            StartCoroutine(PlayRandomColorSequence());
-        }
+        StartCoroutine(PlayRandomColorSequence());
     }
 
     IEnumerator PlayRandomColorSequence()
     {
+        yield return new WaitForSeconds(0.2f);
+
         List<List<int>> sequence = new List<List<int>>();
 
         for (int i = 0; i < sequenceLength; i++)
