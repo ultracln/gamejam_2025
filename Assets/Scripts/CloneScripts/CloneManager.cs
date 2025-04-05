@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Numerics;
+using UnityEngine;
 
-public static class CloneManager
+public class CloneManager: MonoBehaviour
 {
-    public static List<List<ActionRecorder.PlayerAction>> allClones = new List<List<ActionRecorder.PlayerAction>>();
-    public static int maxClones = 3;
+    public List<List<ActionRecorder.PlayerAction>> allClones = new List<List<ActionRecorder.PlayerAction>>();
+    public int maxClones = 3;
 
-    public static void AddClone(List<ActionRecorder.PlayerAction> actions)
+    public void AddClone(List<ActionRecorder.PlayerAction> actions)
     {
         if (allClones.Count >= maxClones)
         {
@@ -17,7 +18,7 @@ public static class CloneManager
         allClones.Add(actions);
     }
 
-    public static void Clear()
+    public void Clear()
     {
         allClones.Clear();
     }

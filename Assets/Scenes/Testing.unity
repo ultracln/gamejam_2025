@@ -289,6 +289,7 @@ MonoBehaviour:
   input: {fileID: 5420857362295223505}
   playerTransform: {fileID: 8997996945881199127}
   clonePrefab: {fileID: 4055276851082861832, guid: a0b3387fb9c576e4c882c6db97f944d4, type: 3}
+  cloneManager: {fileID: 1376891047}
   actions: []
 --- !u!4 &603782998
 Transform:
@@ -511,6 +512,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c489a8547f4d9e4387da15a4ff82c81, type: 3}
+--- !u!1 &1376891045
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1376891046}
+  - component: {fileID: 1376891047}
+  m_Layer: 0
+  m_Name: CloneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1376891046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376891045}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.2109575, y: -9.286435, z: 26.45168}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1376891047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376891045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a04c0bc662e136e4e878a5b5f5158365, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxClones: 3
 --- !u!1001 &1455879930
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -857,3 +903,4 @@ SceneRoots:
   - {fileID: 672371909877466935}
   - {fileID: 603782998}
   - {fileID: 39138245}
+  - {fileID: 1376891046}

@@ -21,8 +21,7 @@ public class ActionRecorder : MonoBehaviour
     public StarterAssets.StarterAssetsInputs input;
     public Transform playerTransform;
     public GameObject clonePrefab;
-
-    public int maxClones = 3;
+    public CloneManager cloneManager;
 
     private float timer = 0f;
     private float rightClickHold = 0f;
@@ -86,7 +85,7 @@ public class ActionRecorder : MonoBehaviour
             CloneActionHistory.Add(new List<PlayerAction>(actions));
 
             // Keep list under max clones
-            if (CloneActionHistory.Count > maxClones)
+            if (CloneActionHistory.Count > cloneManager.maxClones)
             {
                 CloneActionHistory.RemoveAt(0);
             }
