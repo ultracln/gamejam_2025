@@ -42,11 +42,11 @@ public class play_vfx : MonoBehaviour
     private void Update()
     {
         // Abort effect entirely if max clones are already reached
-        if (CloneManager.allClones.Count >= cloneManager.maxClones)
+        /*if (CloneManager.allClones.Count >= cloneManager.maxClones)
         {
             ResetEffects(); // Optional: fade out instantly if already active
             return;
-        }
+        }*/
 
         if (Input.GetMouseButton(1) && !effectLocked && !isFadingOut)
         {
