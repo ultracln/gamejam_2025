@@ -68,7 +68,11 @@ public class ActionRecorder : MonoBehaviour
             rightClickHold += Time.deltaTime;
             if (rightClickHold >= requiredHoldTime)
             {
-                DumpAndReload();
+                // maxClones number reached 
+                if (CloneActionHistory.Count < cloneManager.maxClones)
+                {
+                    DumpAndReload();
+                }
             }
         }
         else
@@ -83,12 +87,6 @@ public class ActionRecorder : MonoBehaviour
         {
             // Add current session to history
             CloneActionHistory.Add(new List<PlayerAction>(actions));
-
-            // Keep list under max clones
-            if (CloneActionHistory.Count > cloneManager.maxClones)
-            {
-                CloneActionHistory.RemoveAt(0);
-            }
 
             Debug.Log("Actions recorded and added to clone history.");
         }

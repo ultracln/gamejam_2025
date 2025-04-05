@@ -12,7 +12,7 @@ public class CloneManager: MonoBehaviour
         if (allClones.Count >= maxClones)
         {
             // TODO: full clones logic
-            allClones.RemoveAt(0); // remove oldest
+            
         }
 
         allClones.Add(actions);
