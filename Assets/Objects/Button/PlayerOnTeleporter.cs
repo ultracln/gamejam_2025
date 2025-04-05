@@ -215,6 +215,7 @@ public class PlayerOnTeleporter : MonoBehaviour
             if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             {
                 cloneManager.Clear();
+                StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(nextSceneName);
             }
             else
