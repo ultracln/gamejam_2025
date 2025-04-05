@@ -4831,6 +4831,10 @@ PrefabInstance:
       propertyPath: checker
       value: 
       objectReference: {fileID: 230030345}
+    - target: {fileID: 6685240372830584182, guid: cc61fc7d866f76948990ebd25fe1cd49, type: 3}
+      propertyPath: cloneManager
+      value: 
+      objectReference: {fileID: 18238575}
     - target: {fileID: 8399004477682186550, guid: cc61fc7d866f76948990ebd25fe1cd49, type: 3}
       propertyPath: m_Radius
       value: 0.01

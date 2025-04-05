@@ -1999,6 +1999,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6685240372830584182, guid: cc61fc7d866f76948990ebd25fe1cd49, type: 3}
+      propertyPath: cloneManager
+      value: 
+      objectReference: {fileID: 1102995602}
+    - target: {fileID: 6685240372830584182, guid: cc61fc7d866f76948990ebd25fe1cd49, type: 3}
       propertyPath: simonSaysDoor
       value: 
       objectReference: {fileID: 2061593628}
