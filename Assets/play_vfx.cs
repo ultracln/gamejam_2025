@@ -48,17 +48,17 @@ public class play_vfx : MonoBehaviour
 
         if (Input.GetMouseButton(1) && !effectLocked && !isFadingOut)
         {
-            //// Play sound if it's not already played
-            //if (!soundPlayed)
-            //{
-            //    currentAudioSource = SFXManager.instance.playSoundFX(soundClip, transform, 1f); // Store the reference to the AudioSource
-            //    soundPlayed = true;
-            //}
-            //else if (currentAudioSource != null && !currentAudioSource.isPlaying)
-            //{
-            //    // If the sound is paused, unpause it
-            //    currentAudioSource.UnPause();
-            //}
+            // Play sound if it's not already played
+            if (!soundPlayed)
+            {
+                currentAudioSource = SFXManager.instance.playSoundFX(soundClip, transform, 1f); // Store the reference to the AudioSource
+                soundPlayed = true;
+            }
+            else if (currentAudioSource != null && !currentAudioSource.isPlaying)
+            {
+                // If the sound is paused, unpause it
+                currentAudioSource.UnPause();
+            }
 
             holdTime += Time.deltaTime;
 
