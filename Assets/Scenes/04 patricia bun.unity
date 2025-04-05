@@ -1418,7 +1418,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4882650369243192117, guid: 33e9c339d3e8725469661d119107273a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 6671322001571048594, guid: 33e9c339d3e8725469661d119107273a, type: 3}
       propertyPath: m_Enabled
@@ -2581,6 +2581,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToStayOnTeleporter: 1
   targetObjectName: SM_Teleporter
+  targetColorBox: colorBox
+  checker: {fileID: 0}
 --- !u!1 &1867730019 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1630728370260430582, guid: e7ccd293c4c9199429cb7cc5d59ad894, type: 3}
@@ -3376,6 +3378,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToStayOnTeleporter: 1
   targetObjectName: SM_Teleporter
+  targetColorBox: colorBox
+  checker: {fileID: 0}
 --- !u!54 &2085418165
 Rigidbody:
   m_ObjectHideFlags: 0
