@@ -1032,6 +1032,9 @@ GameObject:
   - component: {fileID: 2678077317376440401}
   - component: {fileID: -5111541175641215988}
   - component: {fileID: -809280938603217768}
+  - component: {fileID: 4417878754333716665}
+  - component: {fileID: 5403937313930853975}
+  - component: {fileID: 3633458143046433503}
   m_Layer: 8
   m_Name: Clone
   m_TagString: Player
@@ -1098,7 +1101,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.8
-  m_Radius: 0.28
+  m_Radius: 0.1
   m_SlopeLimit: 45
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
@@ -1141,6 +1144,75 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   actionRecorder: {fileID: 9025136686856876163, guid: f4bd66e280685404ab75949e8d779e56, type: 3}
+--- !u!136 &4417878754333716665
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055276851082861832}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.18948814
+  m_Height: 1.8006072
+  m_Direction: 1
+  m_Center: {x: 0.016747564, y: 0.8812182, z: 0}
+--- !u!54 &5403937313930853975
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055276851082861832}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &3633458143046433503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055276851082861832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3b3354b5f2b2fe40b31e33177f6246b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToStayOnTeleporter: 1
+  targetObjectName: SM_Teleporter
+  targetColorBox: colorBox
+  highlightColors: []
+  checker: {fileID: 0}
+  simonSaysDoor: {fileID: 0}
+  simonSaysSequence: {fileID: 0}
 --- !u!1 &4261213610570786035
 GameObject:
   m_ObjectHideFlags: 0
