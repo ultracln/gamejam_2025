@@ -45,7 +45,7 @@ public class play_vfx : MonoBehaviour
 
     private void Update()
     {
-        // Check if we should play the sound effect (only when the effect starts)
+
         if (Input.GetMouseButton(1) && !effectLocked && !isFadingOut)
         {
             // Play sound if it's not already played
