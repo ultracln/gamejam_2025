@@ -44,7 +44,7 @@ public class CloneController : MonoBehaviour
     private List<ActionRecorder.PlayerAction> actions;
     private int _currentActionIndex = 0;
     private bool isInitialized = false;
-    private float correctionThreshold = 0.1f;
+    private float correctionThreshold = 0.001f;
     private int correctionInterval = 10;
 
 
@@ -94,10 +94,28 @@ public class CloneController : MonoBehaviour
             }
         }
 
-        GroundedCheck();
+        /*GroundedCheck();
 
         Move(action);
-        JumpAndGravity(action);
+        JumpAndGravity(action);*/
+
+        // Use recorded position and rotation
+        _controller.enabled = false; // Disable controller to avoid interfering with manual positioning
+        transform.position = action.position;
+        transform.rotation = Quaternion.Euler(0, action.cameraYaw, 0); // Optional: Set facing direction
+        _controller.enabled = true;
+
+        // Update grounded state
+        GroundedCheck();
+
+        // Update animations
+        if (_hasAnimator)
+        {
+            _animator.SetFloat(_animIDSpeed, action.sprint ? SprintSpeed : MoveSpeed);
+            _animator.SetFloat(_animIDMotionSpeed, action.moveInput.magnitude);
+            _animator.SetBool(_animIDJump, action.jump);
+        }
+
 
         if (action.leftClick && !string.IsNullOrEmpty(action.buttonID))
         {

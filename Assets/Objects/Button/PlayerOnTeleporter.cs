@@ -14,15 +14,13 @@ public class PlayerOnTeleporter : MonoBehaviour
     public Color[] highlightColors;
     private Dictionary<int, Coroutine> activeCoroutines = new Dictionary<int, Coroutine>();
     private Dictionary<int, Color> pastColors = new Dictionary<int, Color>(); // Make sure this is properly filled
-
+    private List<int> currentGroup = new List<int>(); // temp group for combining
 
     public CloneManager cloneManager;
     public CubeColorChecker checker = null;
     public SimonSaysDoor simonSaysDoor = null;
     public SimonSaysSequence simonSaysSequence = null;
-
-    // This is your "history" of active highlights
-    private List<List<int>> highlightTimeline = new List<List<int>>();
+    private HashSet<int> currentlyHighlighted = new HashSet<int>();
 
     public void InitChecker()
     {
@@ -95,37 +93,61 @@ public class PlayerOnTeleporter : MonoBehaviour
         if (other.gameObject.name.StartsWith("ColoredBox"))
         {
             Renderer renderer = other.GetComponent<Renderer>();
-            string numberPart = other.gameObject.name.Substring("ColoredBox".Length); // Get everything after "ColoredBox"
+            string numberPart = other.gameObject.name.Substring("ColoredBox".Length);
 
             if (int.TryParse(numberPart, out int boxNumber))
             {
-                // Store the original color if we haven't already
                 if (!pastColors.ContainsKey(boxNumber))
-                {
                     pastColors[boxNumber] = renderer.material.color;
-                }
 
-                // Stop previous coroutine for this box, if any
+                // Stop and reset previous coroutine
                 if (activeCoroutines.TryGetValue(boxNumber, out Coroutine existingCoroutine))
                 {
-                    StopCoroutine(existingCoroutine);
-                    renderer.material.color = pastColors[boxNumber];
+                    if (existingCoroutine != null)
+                    {
+                        StopCoroutine(existingCoroutine);
+                        renderer.material.color = pastColors[boxNumber];
+                    }
                 }
 
-                // Start new coroutine and store reference
-                Coroutine newCoroutine = StartCoroutine(ChangeColorTemporary(boxNumber, renderer, highlightColors[boxNumber], 1f));
+                // Start new highlight
+                Coroutine newCoroutine = StartCoroutine(ChangeColorTemporary(boxNumber, renderer, highlightColors[boxNumber], 2f));
                 activeCoroutines[boxNumber] = newCoroutine;
+                currentlyHighlighted.Add(boxNumber);
 
-                // Record current active highlight box numbers
-                List<int> currentActive = new List<int>(activeCoroutines.Keys);
-                highlightTimeline.Add(currentActive);
+                // Always track time since last input
+                float timeSinceLast = Time.time - StaticScene.lastHighlightTime;
+                StaticScene.lastHighlightTime = Time.time;
 
-                if (highlightTimeline.Count > 4)
+                if (StaticScene.highlightTimeline.Count > 0 && timeSinceLast <= 2f && StaticScene.highlightTimeline[^1].Count == 1)
                 {
-                    highlightTimeline.RemoveAt(0); // Remove the oldest
+                    // Add to the last group if within 1 second and only one item is there
+                    StaticScene.highlightTimeline[^1].Add(boxNumber);
+                }
+                else
+                {
+                    // Add new group with current box
+                    StaticScene.highlightTimeline.Add(new List<int> { boxNumber });
                 }
 
-                if (AreTimelinesEqual(highlightTimeline, RememberSequence.targetPattern))
+                // Cap timeline to 4 entries
+                if (StaticScene.highlightTimeline.Count > 4)
+                {
+                    StaticScene.highlightTimeline.RemoveAt(0);
+                }
+
+
+
+                //foreach (var i in StaticScene.highlightTimeline)
+                //{
+                //    Debug.Log("list: ");
+                //    foreach (int j in i)
+                //        Debug.Log(j);
+                //}
+
+
+                // Check match
+                if (AreTimelinesEqual(StaticScene.highlightTimeline, RememberSequence.targetPattern))
                 {
                     simonSaysDoor.OpenTheDoor();
                 }
@@ -133,9 +155,32 @@ public class PlayerOnTeleporter : MonoBehaviour
         }
     }
 
+    private IEnumerator ChangeColorTemporary(int boxNumber, Renderer renderer, Color newColor, float duration)
+    {
+        // Apply the highlight color
+        renderer.material.color = newColor;
+
+        // Wait for the duration
+        yield return new WaitForSeconds(duration);
+
+        // Revert to original color if it exists
+        if (pastColors.TryGetValue(boxNumber, out Color originalColor))
+        {
+            renderer.material.color = originalColor;
+        }
+
+        // Remove from the currently highlighted set
+        currentlyHighlighted.Remove(boxNumber);
+
+        // Clear the coroutine reference
+        activeCoroutines[boxNumber] = null;
+    }
+
+
+
     bool AreTimelinesEqual(List<List<int>> a, List<List<int>> b)
     {
-        if (a == null || b == null) return false;   
+        if (a == null || b == null) return false;
         if (a.Count != b.Count)
             return false;
 
@@ -160,24 +205,6 @@ public class PlayerOnTeleporter : MonoBehaviour
 
         return true;
     }
-
-
-    private IEnumerator ChangeColorTemporary(int boxNumber, Renderer renderer, Color newColor, float duration)
-    {
-        renderer.material.color = newColor;
-        yield return new WaitForSeconds(duration);
-
-        // Revert to original color
-        if (pastColors.ContainsKey(boxNumber))
-        {
-            renderer.material.color = pastColors[boxNumber];
-        }
-
-        // Remove from coroutine tracking
-        activeCoroutines.Remove(boxNumber);
-    }
-
-
 
     private void OnTriggerStay(Collider other)
     {
@@ -232,6 +259,7 @@ public class PlayerOnTeleporter : MonoBehaviour
             if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             {
                 cloneManager.Clear();
+
                 StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(nextSceneName);
             }
