@@ -15,7 +15,6 @@ public class ButtonHint : MonoBehaviour
 
     private bool isShowing = false;
     private bool playerHasClicked = false;
-    private bool isShowing2 = false;
 
     void Update()
     {
@@ -57,12 +56,10 @@ public class ButtonHint : MonoBehaviour
         // Show second tutorial
         tutorialText2.GetComponent<CanvasGroup>().alpha = 1f;
         Debug.Log("acum ar tb sa se afiseze tut 2");
-        isShowing2 = true;
 
         yield return new WaitForSeconds(secondTutDuration);
 
         // Hide second tutorial
         tutorialText2.GetComponent<CanvasGroup>().alpha = 0f;
-        isShowing2 = false;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelButtons : MonoBehaviour
 {
+    public CloneManager cloneManager;
     public void LoadSceneFromSelf()
     {
         // Get the TextMeshPro component (TMP_Text)
@@ -16,6 +17,7 @@ public class LevelButtons : MonoBehaviour
             // Check if the scene exists before attempting to load it
             if (Application.CanStreamedLevelBeLoaded(sceneName))
             {
+                cloneManager.Clear();
                 StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(sceneName);
             }
