@@ -314,12 +314,11 @@ public class PlayerOnTeleporter : MonoBehaviour
             // Generate the next scene name (increment the number)
             string nextSceneName = (sceneNumber + 1).ToString("00"); // Keeps format like "01", "02", "03"
 
-            // Check if the next scene exists before loading (recommended)
+            // Check if the next scene exists before loading
             if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             {
                 cloneManager.Clear();
-
-                StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
+                StaticScene.lastSceneName = currentSceneName;
                 SceneManager.LoadScene(nextSceneName);
             }
             else
@@ -332,4 +331,5 @@ public class PlayerOnTeleporter : MonoBehaviour
             Debug.LogError("Invalid scene name format: " + currentSceneName);
         }
     }
+
 }
