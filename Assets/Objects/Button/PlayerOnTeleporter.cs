@@ -299,6 +299,15 @@ public class PlayerOnTeleporter : MonoBehaviour
         // Get the current scene name
         string currentSceneName = SceneManager.GetActiveScene().name;
 
+        // Special case: if the current scene is "05", load "SelectLevel"
+        if (currentSceneName == "05")
+        {
+            cloneManager.Clear();
+            StaticScene.lastSceneName = currentSceneName;
+            SceneManager.LoadScene("SelectLevel");
+            return;
+        }
+
         // Try to convert scene name into a number
         if (int.TryParse(currentSceneName, out int sceneNumber))
         {
