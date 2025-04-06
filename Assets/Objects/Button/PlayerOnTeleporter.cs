@@ -22,6 +22,10 @@ public class PlayerOnTeleporter : MonoBehaviour
     public AudioClip teleporterAudioClip;
     public AudioClip pressurePlateAudioClip;
 
+    private float lastSimonSaysTriggerTime = -999f;
+    private float simonSaysCooldown = 1f; // 1 second cooldown
+
+
     public void InitChecker()
     {
         if (checker == null)
@@ -131,6 +135,10 @@ public class PlayerOnTeleporter : MonoBehaviour
 
         if (other.gameObject.name.StartsWith("ColoredBox"))
         {
+            if (Time.time - lastSimonSaysTriggerTime < simonSaysCooldown)
+                return; // Ignore if triggered too recently
+
+            lastSimonSaysTriggerTime = Time.time;
             SFXManager.instance.playSoundFX(pressurePlateAudioClip, transform, 1f);
             Renderer renderer = other.GetComponent<Renderer>();
             string numberPart = other.gameObject.name.Substring("ColoredBox".Length);
@@ -151,7 +159,7 @@ public class PlayerOnTeleporter : MonoBehaviour
                 }
 
                 // Start new highlight
-                Coroutine newCoroutine = StartCoroutine(ChangeColorTemporary(boxNumber, renderer, highlightColors[boxNumber], 2f));
+                Coroutine newCoroutine = StartCoroutine(ChangeColorTemporary(boxNumber, renderer, highlightColors[boxNumber], 1f));
                 activeCoroutines[boxNumber] = newCoroutine;
                 currentlyHighlighted.Add(boxNumber);
 
@@ -159,7 +167,7 @@ public class PlayerOnTeleporter : MonoBehaviour
                 float timeSinceLast = Time.time - StaticScene.lastHighlightTime;
                 StaticScene.lastHighlightTime = Time.time;
 
-                if (StaticScene.highlightTimeline.Count > 0 && timeSinceLast <= 2f && StaticScene.highlightTimeline[^1].Count == 1)
+                if (StaticScene.highlightTimeline.Count > 0 && timeSinceLast <= 1f && StaticScene.highlightTimeline[^1].Count == 1)
                 {
                     // Add to the last group if within 1 second and only one item is there
                     StaticScene.highlightTimeline[^1].Add(boxNumber);
@@ -178,12 +186,13 @@ public class PlayerOnTeleporter : MonoBehaviour
 
 
 
-                //foreach (var i in StaticScene.highlightTimeline)
-                //{
-                //    Debug.Log("list: ");
-                //    foreach (int j in i)
-                //        Debug.Log(j);
-                //}
+                // Debug print the sequence
+                Debug.Log("Generated Sequence: ");
+                foreach (var step in StaticScene.highlightTimeline)
+                {
+                    string stepString = string.Join(", ", step);
+                    Debug.Log(stepString);
+                }
 
 
                 // Check match
