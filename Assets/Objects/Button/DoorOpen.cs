@@ -20,6 +20,7 @@ public class DoorOpen : MonoBehaviour
         closedLocalPos = transform.localPosition;
         openLocalPos = new Vector3(closedLocalPos.x + moveDistance, closedLocalPos.y, closedLocalPos.z);
         StaticScene.highlightTimeline = new List<List<int>>();
+        StaticScene.lastHighlightTime = 0f;
     }
 
     public void OpenDoor()
