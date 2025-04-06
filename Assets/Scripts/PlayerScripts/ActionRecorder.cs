@@ -47,6 +47,7 @@ public class ActionRecorder : MonoBehaviour
 
     private void Update()
     {
+        if (PauseGame.IsPaused) return;
         timer += Time.deltaTime;
 
         if (playerTransform != null && input != null)
