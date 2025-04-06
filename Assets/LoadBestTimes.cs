@@ -38,11 +38,19 @@ public class LoadBestTimes : MonoBehaviour
     }
 
     // Format time as minutes:seconds.milliseconds
-    string FormatTime(float time)
+    /*string FormatTime(float time)
     {
         int minutes = Mathf.FloorToInt(time / 60f);
         int seconds = Mathf.FloorToInt(time % 60f);
         int milliseconds = Mathf.FloorToInt((time * 1000f) % 1000);
         return $"{minutes:00}:{seconds:00}.{milliseconds:000}";
+    }*/
+
+    string FormatTime(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60f);
+        int seconds = Mathf.FloorToInt(time % 60f);
+        int frames = Mathf.FloorToInt((time * 60f) % 60f); // Assuming 60 FPS
+        return $"{minutes:00}:{seconds:00}:{frames:00}";
     }
 }
