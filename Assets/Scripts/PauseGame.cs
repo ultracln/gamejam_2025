@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class PauseGame : MonoBehaviour
 {
     public GameObject pauseMenuUI; // Assign your pause Canvas here in Inspector
+    public CloneManager cloneManager;
     public static bool IsPaused { get; private set; }
 
     void Update()
@@ -44,7 +45,8 @@ public class PauseGame : MonoBehaviour
     public void RestartLevel()
     {
         ResumeGame();
-        StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
+        cloneManager.Clear();
+        StaticScene.lastSceneName = "";
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -66,6 +68,6 @@ public class PauseGame : MonoBehaviour
     {
         ResumeGame();
         StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene("SelectLevel"); // Replace with your main menu scene name
+        SceneManager.LoadScene("Settings"); // Replace with your main menu scene name
     }
 }

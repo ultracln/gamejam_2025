@@ -756,6 +756,7 @@ GameObject:
   - component: {fileID: 969375458}
   - component: {fileID: 969375457}
   - component: {fileID: 969375456}
+  - component: {fileID: 969375460}
   - component: {fileID: 969375459}
   m_Layer: 5
   m_Name: Settings
@@ -826,7 +827,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 969375457}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 969375460}
+        m_TargetAssemblyTypeName: LoadSettings, Assembly-CSharp
+        m_MethodName: LoadSetting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &969375457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -878,6 +891,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickSound: {fileID: 8300000, guid: 50d620177d415d24caf215710b2bfd07, type: 3}
+--- !u!114 &969375460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969375454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab362487e79680c4e885fbbe08114b24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &972999107
 GameObject:
   m_ObjectHideFlags: 0
