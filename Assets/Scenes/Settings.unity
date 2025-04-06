@@ -1751,8 +1751,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1369231435}
-        m_TargetAssemblyTypeName: LoadIntroScene, Assembly-CSharp
-        m_MethodName: LoadStart
+        m_TargetAssemblyTypeName: LoadPastScene, Assembly-CSharp
+        m_MethodName: LoadPast
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

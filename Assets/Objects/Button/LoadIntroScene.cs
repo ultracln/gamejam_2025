@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadIntroScene : MonoBehaviour
+public class LoadPastScene : MonoBehaviour
 {
-    public void LoadStart()
+    public void LoadPast()
     {
+        string last = StaticScene.lastSceneName;
         StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene("IntroScene");
+        SceneManager.LoadScene(last);
     }
 }
