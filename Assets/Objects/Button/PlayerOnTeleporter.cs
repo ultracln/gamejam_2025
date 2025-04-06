@@ -214,6 +214,23 @@ public class PlayerOnTeleporter : MonoBehaviour
 
             if (timeOnObject >= timeToStayOnTeleporter) // If stayed for 1 second or more
             {
+                // record the new best
+                float level_completion_time = TimerManager.Instance.GetTime();
+
+                string currentSceneName = SceneManager.GetActiveScene().name;
+                float high_score;
+
+                // Check if the high score for the current scene exists
+                if (StaticScene.sceneHighScores.ContainsKey(currentSceneName))
+                {
+                    high_score = StaticScene.sceneHighScores[currentSceneName]; // Retrieve the high score
+                    StaticScene.sceneHighScores[currentSceneName] = Mathf.Min(level_completion_time, high_score);
+                } else
+                {
+                    StaticScene.sceneHighScores.Add(currentSceneName, level_completion_time);
+                }
+
+                
                 LoadNextScene();
             }
         }
