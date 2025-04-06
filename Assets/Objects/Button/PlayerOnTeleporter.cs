@@ -94,6 +94,7 @@ public class PlayerOnTeleporter : MonoBehaviour
         {
             timeOnObject = 0f; // Reset timer when entering
             SFXManager.instance.playSoundFX(teleporterAudioClip, transform, 1f);
+            play_teleport_vfx.instance.TriggerEffect();
         }
 
         if (other.gameObject.name.StartsWith(targetColorBox))
