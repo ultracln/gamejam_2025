@@ -71,6 +71,7 @@ public class CloneController : MonoBehaviour
 
     void Update()
     {
+        if (PauseGame.IsPaused) return;
         if (!isInitialized || actions == null || actions.Count == 0)
             return;
 
