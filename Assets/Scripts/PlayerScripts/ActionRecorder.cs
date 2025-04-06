@@ -184,7 +184,7 @@ public class ActionRecorder : MonoBehaviour
                 teleporterScript.InitChecker();
             }
 
-            currentSpawnPos = clone.transform.position + clone.transform.right * -1.0f;
+            currentSpawnPos = clone.transform.position - clone.transform.forward * 1.0f; ;
         }
 
         if (playerTransform.TryGetComponent(out CharacterController cc))
