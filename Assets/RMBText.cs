@@ -4,8 +4,8 @@ using System.Collections;
 public class RMBText : MonoBehaviour
 {
     public GameObject RMBtext;
-    public float delayBeforeTutorial = 5f;  // Time after left click to show message
-    public float displayTime = 3f;          // How long to show the message
+    public float delayBeforeTutorial = 4f;  // Time after left click to show message
+    public float displayTime = 5f;          // How long to show the message
 
     private bool hasLeftClicked = false;
     private bool tutorialShown = false;

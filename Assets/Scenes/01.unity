@@ -613,8 +613,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RMBtext: {fileID: 1296419411}
-  delayBeforeTutorial: 0
-  displayTime: 0
+  delayBeforeTutorial: 4
+  displayTime: 3
 --- !u!4 &227302059
 Transform:
   m_ObjectHideFlags: 0
@@ -1741,7 +1741,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 39.3, y: 514.6}
-  m_SizeDelta: {x: 263.26, y: 50}
+  m_SizeDelta: {x: 720, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &879950590
 MonoBehaviour:
@@ -1763,7 +1763,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hold Right Click for 2s to go back in time
+  m_text: Hold Right Click to go back in time
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2310,8 +2310,8 @@ MonoBehaviour:
   tutorialText2: {fileID: 1296419411}
   cameraTransform: {fileID: 2086575945}
   activationDistance: 4.5
-  delayBeforeSecondTut: 1
-  secondTutDuration: 3
+  delayBeforeSecondTut: 5
+  secondTutDuration: 4
 --- !u!4 &1442626867 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8345070699079395522, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
@@ -3560,6 +3560,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 158215887853682429, guid: ad401a2b524b3b242ab19a61227edc79, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6502961594117640360, guid: ad401a2b524b3b242ab19a61227edc79, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.682987
@@ -3629,14 +3633,14 @@ PrefabInstance:
       propertyPath: cloneManager
       value: 
       objectReference: {fileID: 951462233}
-    - target: {fileID: 3551889903255576865, guid: 75b4930ca14b8b44eb635d488c595bc5, type: 3}
-      propertyPath: pauseGame
-      value: 
-      objectReference: {fileID: 735022562}
     - target: {fileID: 3091459659343483490, guid: 75b4930ca14b8b44eb635d488c595bc5, type: 3}
       propertyPath: teleporterAudioClip
       value: 
       objectReference: {fileID: 8300000, guid: 5da18a49a9fee8e44a12e2e6507ff058, type: 3}
+    - target: {fileID: 3551889903255576865, guid: 75b4930ca14b8b44eb635d488c595bc5, type: 3}
+      propertyPath: pauseGame
+      value: 
+      objectReference: {fileID: 735022562}
     - target: {fileID: 4833423782028065111, guid: 75b4930ca14b8b44eb635d488c595bc5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.791
