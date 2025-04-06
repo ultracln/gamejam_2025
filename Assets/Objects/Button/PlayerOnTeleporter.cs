@@ -16,7 +16,7 @@ public class PlayerOnTeleporter : MonoBehaviour
     private Dictionary<int, Color> pastColors = new Dictionary<int, Color>(); // Make sure this is properly filled
     private List<int> currentGroup = new List<int>(); // temp group for combining
 
-
+    public CloneManager cloneManager;
     public CubeColorChecker checker = null;
     public SimonSaysDoor simonSaysDoor = null;
     public SimonSaysSequence simonSaysSequence = null;
@@ -214,6 +214,23 @@ public class PlayerOnTeleporter : MonoBehaviour
 
             if (timeOnObject >= timeToStayOnTeleporter) // If stayed for 1 second or more
             {
+                // record the new best
+                float level_completion_time = TimerManager.Instance.GetTime();
+
+                string currentSceneName = SceneManager.GetActiveScene().name;
+                float high_score;
+
+                // Check if the high score for the current scene exists
+                if (StaticScene.sceneHighScores.ContainsKey(currentSceneName))
+                {
+                    high_score = StaticScene.sceneHighScores[currentSceneName]; // Retrieve the high score
+                    StaticScene.sceneHighScores[currentSceneName] = Mathf.Min(level_completion_time, high_score);
+                } else
+                {
+                    StaticScene.sceneHighScores.Add(currentSceneName, level_completion_time);
+                }
+
+                
                 LoadNextScene();
             }
         }
@@ -241,6 +258,8 @@ public class PlayerOnTeleporter : MonoBehaviour
             // Check if the next scene exists before loading (recommended)
             if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             {
+                cloneManager.Clear();
+
                 StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(nextSceneName);
             }
