@@ -50,7 +50,7 @@ public class TimerManager : MonoBehaviour
     public void ResetTimer()
     {
         // Reset the timer only if we're loading a **new** scene
-        if (SceneManager.GetActiveScene().name != initialSceneName)
+        if (SceneManager.GetActiveScene().name != StaticScene.lastSceneName)
         {
             timeElapsed = 0f; // Reset the timer
             initialSceneName = SceneManager.GetActiveScene().name; // Update the initial scene name
@@ -65,7 +65,7 @@ public class TimerManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // If the scene is reloaded (same scene), do not reset the timer
-        if (scene.name == initialSceneName)
+        if (scene.name == StaticScene.lastSceneName)
         {
             // Do not reset the timer when reloading the same scene
             Debug.Log("Scene reloaded, keeping timer running...");

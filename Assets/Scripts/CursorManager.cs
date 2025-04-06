@@ -44,6 +44,7 @@ public class CursorManager : MonoBehaviour
         bool showCursor =
             sceneName == "IntroScene" ||
             sceneName == "SelectLevel" ||
+            sceneName == "Settings" ||
             isGamePaused;
 
         Cursor.lockState = showCursor ? CursorLockMode.None : CursorLockMode.Locked;

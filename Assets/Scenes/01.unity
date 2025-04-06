@@ -3560,6 +3560,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 673646332248238691, guid: ad401a2b524b3b242ab19a61227edc79, type: 3}
+      propertyPath: cloneManager
+      value: 
+      objectReference: {fileID: 951462233}
     - target: {fileID: 6502961594117640360, guid: ad401a2b524b3b242ab19a61227edc79, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.682987
@@ -3629,14 +3633,14 @@ PrefabInstance:
       propertyPath: cloneManager
       value: 
       objectReference: {fileID: 951462233}
-    - target: {fileID: 3551889903255576865, guid: 75b4930ca14b8b44eb635d488c595bc5, type: 3}
-      propertyPath: pauseGame
-      value: 
-      objectReference: {fileID: 735022562}
     - target: {fileID: 3091459659343483490, guid: 75b4930ca14b8b44eb635d488c595bc5, type: 3}
       propertyPath: teleporterAudioClip
       value: 
       objectReference: {fileID: 8300000, guid: 5da18a49a9fee8e44a12e2e6507ff058, type: 3}
+    - target: {fileID: 3551889903255576865, guid: 75b4930ca14b8b44eb635d488c595bc5, type: 3}
+      propertyPath: pauseGame
+      value: 
+      objectReference: {fileID: 735022562}
     - target: {fileID: 4833423782028065111, guid: 75b4930ca14b8b44eb635d488c595bc5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.791
