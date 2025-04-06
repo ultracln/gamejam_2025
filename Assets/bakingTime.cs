@@ -14,13 +14,16 @@ public class bakingTime : MonoBehaviour
         Debug.Log("bakin time is over");
     }*/
 
-    public CanvasGroup canvasGroup; // Drag in CanvasGroup component
+    public CanvasGroup[] canvasGroups; // Drag in CanvasGroup component
 
     IEnumerator Start()
     {
-        canvasGroup.alpha = 0f; // Hide before first frame
-        // canvasGroup.gameObject.SetActive(true); // Ensure it's active
-        yield return null;
-        canvasGroup.alpha = 0f; // Still hidden after warmup
+        foreach (var canvasGroup in canvasGroups) {
+
+            canvasGroup.alpha = 0f; // Hide before first frame
+                                    // canvasGroup.gameObject.SetActive(true); // Ensure it's active
+            yield return null;
+            canvasGroup.alpha = 0f; // Still hidden after warmup
+        }
     }
 }
