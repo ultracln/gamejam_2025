@@ -14,18 +14,13 @@ public class PlayerOnTeleporter : MonoBehaviour
     public Color[] highlightColors;
     private Dictionary<int, Coroutine> activeCoroutines = new Dictionary<int, Coroutine>();
     private Dictionary<int, Color> pastColors = new Dictionary<int, Color>(); // Make sure this is properly filled
-    private float lastHighlightTime = 0f;
     private List<int> currentGroup = new List<int>(); // temp group for combining
 
 
-    public CloneManager cloneManager;
     public CubeColorChecker checker = null;
     public SimonSaysDoor simonSaysDoor = null;
     public SimonSaysSequence simonSaysSequence = null;
     private HashSet<int> currentlyHighlighted = new HashSet<int>();
-
-    // This is your "history" of active highlights
-    private List<List<int>> highlightTimeline = new List<List<int>>();
 
     public void InitChecker()
     {
@@ -116,33 +111,43 @@ public class PlayerOnTeleporter : MonoBehaviour
                 }
 
                 // Start new highlight
-                Coroutine newCoroutine = StartCoroutine(ChangeColorTemporary(boxNumber, renderer, highlightColors[boxNumber], 5f));
+                Coroutine newCoroutine = StartCoroutine(ChangeColorTemporary(boxNumber, renderer, highlightColors[boxNumber], 2f));
                 activeCoroutines[boxNumber] = newCoroutine;
                 currentlyHighlighted.Add(boxNumber);
 
                 // Always track time since last input
-                float timeSinceLast = Time.time - lastHighlightTime;
-                lastHighlightTime = Time.time;
+                float timeSinceLast = Time.time - StaticScene.lastHighlightTime;
+                StaticScene.lastHighlightTime = Time.time;
 
-                if (highlightTimeline.Count > 0 && timeSinceLast <= 1f && highlightTimeline[^1].Count == 1)
+                if (StaticScene.highlightTimeline.Count > 0 && timeSinceLast <= 2f && StaticScene.highlightTimeline[^1].Count == 1)
                 {
                     // Add to the last group if within 1 second and only one item is there
-                    highlightTimeline[^1].Add(boxNumber);
+                    StaticScene.highlightTimeline[^1].Add(boxNumber);
                 }
                 else
                 {
                     // Add new group with current box
-                    highlightTimeline.Add(new List<int> { boxNumber });
+                    StaticScene.highlightTimeline.Add(new List<int> { boxNumber });
                 }
 
                 // Cap timeline to 4 entries
-                if (highlightTimeline.Count > 4)
+                if (StaticScene.highlightTimeline.Count > 4)
                 {
-                    highlightTimeline.RemoveAt(0);
+                    StaticScene.highlightTimeline.RemoveAt(0);
                 }
 
+
+
+                //foreach (var i in StaticScene.highlightTimeline)
+                //{
+                //    Debug.Log("list: ");
+                //    foreach (int j in i)
+                //        Debug.Log(j);
+                //}
+
+
                 // Check match
-                if (AreTimelinesEqual(highlightTimeline, RememberSequence.targetPattern))
+                if (AreTimelinesEqual(StaticScene.highlightTimeline, RememberSequence.targetPattern))
                 {
                     simonSaysDoor.OpenTheDoor();
                 }
@@ -236,7 +241,6 @@ public class PlayerOnTeleporter : MonoBehaviour
             // Check if the next scene exists before loading (recommended)
             if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             {
-                cloneManager.Clear();
                 StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(nextSceneName);
             }
