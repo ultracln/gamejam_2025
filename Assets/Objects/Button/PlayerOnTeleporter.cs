@@ -19,6 +19,9 @@ public class PlayerOnTeleporter : MonoBehaviour
     public SimonSaysSequence simonSaysSequence = null;
     private HashSet<int> currentlyHighlighted = new HashSet<int>();
 
+    public AudioClip teleporterAudioClip;
+    public AudioClip pressurePlateAudioClip;
+
     public void InitChecker()
     {
         if (checker == null)
@@ -47,6 +50,42 @@ public class PlayerOnTeleporter : MonoBehaviour
                 Debug.LogWarning("simonSaysSequence not found in scene.");
             }
         }
+
+        /*if (teleporterAudioClip == null)
+        {
+            teleporterAudioClip = FindObjectOfType<AudioClip>();
+            if (teleporterAudioClip == null)
+            {
+                Debug.LogWarning("teleporterAudioClip not found in scene.");
+            }
+        }
+
+        if (pressurePlateAudioClip == null)
+        {
+            pressurePlateAudioClip = FindObjectOfType<AudioClip>();
+            if (pressurePlateAudioClip == null)
+            {
+                Debug.LogWarning("pressurePlateAudioClip not found in scene.");
+            }
+        }*/
+
+        if (teleporterAudioClip == null)
+        {
+            teleporterAudioClip = Resources.Load<AudioClip>("Audio/teleporter");
+            if (teleporterAudioClip == null)
+            {
+                Debug.LogWarning("teleporterAudioClip not found in Resources/Audio/TeleporterSound.");
+            }
+        }
+
+        if (pressurePlateAudioClip == null)
+        {
+            pressurePlateAudioClip = Resources.Load<AudioClip>("Audio/pressure_plate");
+            if (pressurePlateAudioClip == null)
+            {
+                Debug.LogWarning("pressurePlateAudioClip not found in Resources/Audio/PressurePlateSound.");
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -54,10 +93,12 @@ public class PlayerOnTeleporter : MonoBehaviour
         if (other.gameObject.name == targetObjectName)
         {
             timeOnObject = 0f; // Reset timer when entering
+            SFXManager.instance.playSoundFX(teleporterAudioClip, transform, 1f);
         }
 
         if (other.gameObject.name.StartsWith(targetColorBox))
         {
+            SFXManager.instance.playSoundFX(pressurePlateAudioClip, transform, 1f);
             Renderer renderer = other.GetComponent<Renderer>();
             if (renderer != null)
             {
@@ -77,6 +118,7 @@ public class PlayerOnTeleporter : MonoBehaviour
 
         if (other.gameObject.name == "PlaySimonSaysBox")
         {
+            SFXManager.instance.playSoundFX(pressurePlateAudioClip, transform, 1f);
             Renderer renderer = other.GetComponent<Renderer>();
             if (renderer.material.color != Color.black)
             {
@@ -89,6 +131,7 @@ public class PlayerOnTeleporter : MonoBehaviour
 
         if (other.gameObject.name.StartsWith("ColoredBox"))
         {
+            SFXManager.instance.playSoundFX(pressurePlateAudioClip, transform, 1f);
             Renderer renderer = other.GetComponent<Renderer>();
             string numberPart = other.gameObject.name.Substring("ColoredBox".Length);
 
