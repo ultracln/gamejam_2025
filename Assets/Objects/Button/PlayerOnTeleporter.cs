@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
-using System;
 
 public class PlayerOnTeleporter : MonoBehaviour
 {
@@ -14,7 +12,6 @@ public class PlayerOnTeleporter : MonoBehaviour
     public Color[] highlightColors;
     private Dictionary<int, Coroutine> activeCoroutines = new Dictionary<int, Coroutine>();
     private Dictionary<int, Color> pastColors = new Dictionary<int, Color>(); // Make sure this is properly filled
-    private List<int> currentGroup = new List<int>(); // temp group for combining
 
     public CloneManager cloneManager;
     public CubeColorChecker checker = null;

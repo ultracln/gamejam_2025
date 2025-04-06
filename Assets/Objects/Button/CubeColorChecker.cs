@@ -22,13 +22,6 @@ public class CubeColorChecker : MonoBehaviour
 
                 if (ColorsMatchRounded(floorColor, wallColor))
                     crtCompared++;
-                else
-                {
-                    Debug.Log("DIFFERENT: ");
-                    Debug.Log(floorColor);
-                    Debug.Log(wallColor);
-                }
-                    
             }
         }
         if (crtCompared >= numberOfCubes)
