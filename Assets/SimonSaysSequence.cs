@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SimonSaysSequence : MonoBehaviour
 {
@@ -54,8 +55,16 @@ public class SimonSaysSequence : MonoBehaviour
             }
         }
 
-        if (RememberSequence.targetPattern  == null)
+        if (StaticScene.lastSceneName != SceneManager.GetActiveScene().name)
+        {
+            RememberSequence.isOkToRemember = true;
+        }
+
+        if (RememberSequence.isOkToRemember)
+        {
             RememberSequence.targetPattern = sequence.Select(inner => new List<int>(inner)).ToList();
+            RememberSequence.isOkToRemember = false;
+        }
 
         // Debug print the sequence
         Debug.Log("Generated Sequence: ");
