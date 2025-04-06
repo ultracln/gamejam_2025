@@ -295,7 +295,7 @@ MonoBehaviour:
   bloomMax: 500
   bloomScatterMin: 0.5
   bloomScatterMax: 0.8
-  effectDuration: 2
+  effectDuration: 1
   resetAfterFinish: 0
 --- !u!4 &206110248
 Transform:
@@ -1110,7 +1110,7 @@ MonoBehaviour:
   bloomMax: 500
   bloomScatterMin: 0.5
   bloomScatterMax: 0.8
-  effectDuration: 2
+  effectDuration: 1
 --- !u!4 &1120255377
 Transform:
   m_ObjectHideFlags: 0

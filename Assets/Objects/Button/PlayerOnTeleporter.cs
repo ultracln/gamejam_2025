@@ -18,6 +18,7 @@ public class PlayerOnTeleporter : MonoBehaviour
     private List<int> currentGroup = new List<int>(); // temp group for combining
 
 
+    public CloneManager cloneManager;
     public CubeColorChecker checker = null;
     public SimonSaysDoor simonSaysDoor = null;
     public SimonSaysSequence simonSaysSequence = null;
@@ -235,6 +236,7 @@ public class PlayerOnTeleporter : MonoBehaviour
             // Check if the next scene exists before loading (recommended)
             if (Application.CanStreamedLevelBeLoaded(nextSceneName))
             {
+                cloneManager.Clear();
                 StaticScene.lastSceneName = SceneManager.GetActiveScene().name;
                 SceneManager.LoadScene(nextSceneName);
             }
